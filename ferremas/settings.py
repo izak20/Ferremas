@@ -92,9 +92,9 @@ WSGI_APPLICATION = 'ferremas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ferremas',
+        'NAME': 'ferremastest2',
         'USER': 'root',
-        'PASSWORD': 'marconavaja',
+        'PASSWORD': 'pablobenjamin005',
         'HOST': 'localhost',
         'PORT': '3306',
     }

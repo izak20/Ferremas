@@ -7,83 +7,431 @@
   <title>Carrito de Compras</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
+    :root {
+      --primary-color: #6f42c1;
+      --secondary-color: #fd7e14;
+      --accent-color: #20c997;
+      --dark-color: #212529;
+      --light-color: #f8f9fa;
     }
+
     body {
-      background: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=crop&h=700&w=1600') center center/cover no-repeat;
-      background-attachment: fixed;
+      background: linear-gradient(135deg, var(--light-color) 0%, #e9ecef 100%);
       font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
-    main { flex: 1; }
-    .hero-title {
-      font-size: 2.7rem;
-      font-weight: 700;
-      text-align: center;
-      padding: 50px 20px 10px;
-      color: rgb(0, 0, 0);
+
+    main { 
+      flex: 1;
+      padding-top: 120px;
     }
+
+    /* Navbar Bootstrap personalizada */
+    .navbar {
+      background: linear-gradient(135deg, var(--primary-color), #5a32a3) !important;
+      box-shadow: 0 4px 20px rgba(111, 66, 193, 0.3);
+      padding: 1rem 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1030;
+    }
+
+    .navbar-brand img {
+      transition: all 0.3s ease;
+      filter: brightness(1.1);
+    }
+
+    .navbar-brand:hover img {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .navbar-nav .nav-link {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-weight: 500;
+      margin: 0 0.5rem;
+      border-radius: 20px;
+      padding: 0.5rem 1rem !important;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white !important;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-light {
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-light:hover {
+      background: var(--secondary-color);
+      border-color: var(--secondary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(253, 126, 20, 0.4);
+    }
+
+    /* Título principal */
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .hero-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+      border-radius: 2px;
+    }
+
+    /* Selector de moneda modernizado */
+    .currency-container {
+      background: white;
+      border-radius: 25px;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .form-select {
+      border: 2px solid var(--primary-color);
+      border-radius: 20px;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      width: auto;
+      min-width: 200px;
+    }
+
+    .form-select:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 0.2rem rgba(32, 201, 151, 0.25);
+    }
+
+    /* Container del carrito */
     .cart-container {
       max-width: 1000px;
       margin: auto;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-      padding: 30px;
+      background: white;
+      border-radius: 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
     }
+
+    .cart-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+    }
+
+    /* Tabla modernizada */
+    .table {
+      margin-top: 2rem;
+    }
+
+    .table th {
+      color: var(--primary-color);
+      font-weight: 700;
+      border-bottom: 2px solid var(--primary-color);
+      padding: 1rem;
+    }
+
+    .table td {
+      padding: 1.5rem 1rem;
+      vertical-align: middle;
+      border-bottom: 1px solid #e9ecef;
+    }
+
     .product-img {
       width: 80px;
       height: 80px;
       object-fit: cover;
-      border-radius: 10px;
-      border: 1px solid #ddd;
+      border-radius: 15px;
+      border: 2px solid var(--light-color);
+      transition: all 0.3s ease;
     }
-    .table th { color: #555; }
-    .btn-cart {
-      border-radius: 20px;
-      padding: 6px 12px;
+
+    .product-img:hover {
+      transform: scale(1.1);
+      border-color: var(--accent-color);
     }
+
     .badge-stock {
-      background-color: #d1e7dd;
-      color: #0f5132;
-      font-size: 0.8rem;
-      padding: 5px 10px;
-      border-radius: 12px;
-    }
-    .btn-pay {
-      background-color: #ffc107;
-      border: none;
-      font-weight: bold;
-      font-size: 1.1rem;
-      padding: 12px 40px;
-      border-radius: 8px;
-    }
-    .btn-pay:hover { background-color: #ffb300; }
-    .total-price {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #2e7d32;
-    }
-    footer {
-      background-color: #2e7d32;
+      background: linear-gradient(45deg, var(--accent-color), #17a085);
       color: white;
+      font-size: 0.8rem;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    /* Botones del carrito */
+    .btn-cart {
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-cart.btn-success {
+      background: linear-gradient(45deg, var(--accent-color), #17a085);
+    }
+
+    .btn-cart.btn-danger {
+      background: linear-gradient(45deg, #dc3545, #c82333);
+    }
+
+    .btn-cart:hover {
+      transform: scale(1.1) translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .quantity-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .quantity-display {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      min-width: 30px;
       text-align: center;
-      padding: 20px 0;
-      margin-top: 20px;
+    }
+
+    /* Total del carrito */
+    .total-price {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--secondary-color);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Botón de pago */
+    .btn-pay {
+      background: linear-gradient(45deg, var(--secondary-color), #e8590c);
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      padding: 1rem 2.5rem;
+      box-shadow: 0 8px 25px rgba(253, 126, 20, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .btn-pay:hover {
+      background: linear-gradient(45deg, #e8590c, #dc5502);
+      color: white;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 35px rgba(253, 126, 20, 0.5);
+    }
+
+    .btn-warning {
+      background: linear-gradient(45deg, #ffc107, #ffb300);
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      color: var(--dark-color);
+      transition: all 0.3s ease;
+    }
+
+    .btn-warning:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+    }
+
+    /* Alertas modernizadas */
+    .alert {
+      border: none;
+      border-radius: 20px;
+      font-weight: 600;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert-warning {
+      background: linear-gradient(45deg, #fff3cd, #ffeaa7);
+      color: #856404;
+    }
+
+    .alert-info {
+      background: linear-gradient(45deg, #d1ecf1, #a8dadc);
+      color: #0c5460;
+    }
+
+    /* Formulario de entrega */
+    .delivery-form {
+      background: linear-gradient(135deg, rgba(111, 66, 193, 0.05), rgba(32, 201, 151, 0.05));
+      border-radius: 20px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .form-label {
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+
+    .form-control, .form-select {
+      border: 2px solid #e9ecef;
+      border-radius: 15px;
+      padding: 0.75rem 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 0.2rem rgba(32, 201, 151, 0.25);
+    }
+
+    /* Productos eliminados */
+    .removed-products {
+      background: linear-gradient(135deg, rgba(220, 53, 69, 0.05), rgba(255, 193, 7, 0.05));
+      border-radius: 20px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .list-group-item {
+      border: none;
+      border-radius: 15px;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .badge {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    /* Footer modernizado */
+    footer {
+      background: linear-gradient(135deg, var(--dark-color), #343a40);
+      color: white;
+      padding: 3rem 0;
+      margin-top: 4rem;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+
+    /* Animaciones */
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      main {
+        padding-top: 100px;
+      }
+      
+      .cart-container {
+        padding: 2rem;
+        margin: 1rem;
+      }
+      
+      .currency-container {
+        flex-direction: column;
+        text-align: center;
+        margin: 1rem;
+      }
+      
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .total-price {
+        font-size: 1.5rem;
+      }
+      
+      .table-responsive {
+        border-radius: 15px;
+      }
+      
+      .product-img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .navbar-nav {
+        text-align: center;
+      }
+      
+      .btn-pay {
+        width: 100%;
+      }
+      
+      .quantity-controls {
+        gap: 0.5rem;
+      }
+      
+      .btn-cart {
+        width: 30px;
+        height: 30px;
+      }
     }
   </style>
 </head>
 
 <body>
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2E7D32;">
+<nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 70px; border-radius: 15px 0 15px 0;">
+      <img src="https://i.ibb.co/pBhm08Vn/logo.png" alt="logo" style="height: 70px; border-radius: 15px 0 15px 0;">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
       <span class="navbar-toggler-icon"></span>
@@ -97,8 +445,29 @@
         <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}">Contacto</a></li>
 
         {% if user.is_authenticated %}
+          <li class="nav-item ms-2">
+            <a class="nav-link" href="{% url 'vista_carrito' %}">
+              <i class="fas fa-shopping-cart"></i> Carrito
+            </a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="nav-link" href="{% url 'mi_historial_compras' %}">
+              <i class="fas fa-history"></i> Mis Compras
+            </a>
+          </li>
+        {% endif %}
+
+        {% if user.is_staff %}
+          <li class="nav-item ms-2">
+            <a class="nav-link" href="{% url 'panel_administracion' %}">
+              <i class="fas fa-cog me-1"></i> Panel Admin
+            </a>
+          </li>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
           <li class="nav-item ms-3">
-            <span class="text-white me-3">Hola, {{ user.username }}</span>
+            <span class="text-white me-3 fw-bold">Hola, {{ user.username }}</span>
           </li>
           <li class="nav-item ms-2">
             <a class="btn btn-outline-light px-3 py-2" href="/usuarios/cerrar-sesion/">
@@ -112,80 +481,77 @@
             </a>
           </li>
         {% endif %}
-
-        {% if user.is_staff %}
-          <li class="nav-item ms-2">
-            <a class="nav-link" href="{% url 'panel_administracion' %}">Panel de Administración</a>
-          </li>
-        {% endif %}
-
-        {% if user.is_authenticated %}
-          <li class="nav-item ms-2">
-            <a class="nav-link" href="{% url 'vista_carrito' %}">
-              <i class="fas fa-shopping-cart"></i> Carrito
-            </a>
-          </li>
-          <li class="nav-item ms-2">
-            <a class="nav-link" href="{% url 'mi_historial_compras' %}">
-              <i class="fas fa-history"></i> Mis Compras
-            </a>
-          </li>
-        {% endif %}
       </ul>
     </div>
   </div>
 </nav>
-  <!-- CONTENIDO -->
-  <main>
+
+<!-- CONTENIDO -->
+<main>
+  <div class="container">
     <h1 class="hero-title">Carrito de Compras</h1>
-    <div class="text-center mb-4">
-      <select id="moneda-selector" class="form-select w-auto d-inline-block">
-        <option value="CLP">CLP - Peso Chileno</option>
-        <option value="USD">USD - Dólar</option>
-        <option value="EUR">EUR - Euro</option>
-        <option value="BRL">BRL - Real</option>
-      </select>
+    
+    <!-- Selector de moneda modernizado -->
+    <div class="currency-container fade-in-up">
+      <div class="d-flex align-items-center gap-3 flex-wrap justify-content-center">
+        <label for="moneda-selector" class="fw-bold text-muted mb-0">
+          <i class="fas fa-coins me-2"></i>Moneda:
+        </label>
+        <select id="moneda-selector" class="form-select">
+          <option value="CLP">CLP - Peso Chileno</option>
+          <option value="USD">USD - Dólar</option>
+          <option value="EUR">EUR - Euro</option>
+          <option value="BRL">BRL - Real</option>
+        </select>
+      </div>
     </div>
-    <div class="cart-container">
+
+    <div class="cart-container fade-in-up">
       {% if mensaje %}
         <div class="alert alert-warning text-center">{{ mensaje }}</div>
       {% else %}
         {% if detalles %}
-          <table class="table align-middle">
-            <thead>
-              <tr>
-                <th>Imagen</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for detalle in detalles %}
-                <tr id="detalle-row-{{ detalle.id }}">
-                  <td><img src="{{ detalle.producto.imagen }}" class="product-img" alt=""></td>
-                  <td>
-                    <strong>{{ detalle.producto.nombre }}</strong><br>
-                    <span class="badge-stock">Stock: {{ detalle.producto.stock }}</span>
-                  </td>
-                  <td>
-                    <div class="d-flex justify-content-center align-items-center gap-2">
-                      <button class="btn btn-success btn-cart" onclick="actualizarCantidad({{ detalle.id }}, '+')">+</button>
-                      <span id="cantidad-{{ detalle.id }}">{{ detalle.cantidad_producto }}</span>
-                      <button class="btn btn-danger btn-cart" onclick="disminuirCantidad({{ detalle.id }})">-</button>
-                    </div>
-
-                    <!-- ✅ Inputs ocultos necesarios -->
-                    <input type="hidden" id="producto-id-{{ detalle.id }}" value="{{ detalle.producto.id }}">
-                    <input type="hidden" id="stock-{{ detalle.producto.id }}" value="{{ detalle.producto.stock }}">
-                  </td>
-                  <td id="subtotal-{{ detalle.id }}">${{ detalle.subtotal_venta }}</td>
-                  <td></td>
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th><i class="fas fa-image me-2"></i>Imagen</th>
+                  <th><i class="fas fa-box me-2"></i>Producto</th>
+                  <th><i class="fas fa-sort-numeric-up me-2"></i>Cantidad</th>
+                  <th><i class="fas fa-dollar-sign me-2"></i>Subtotal</th>
+                  <th></th>
                 </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {% for detalle in detalles %}
+                  <tr id="detalle-row-{{ detalle.id }}">
+                    <td><img src="{{ detalle.producto.imagen }}" class="product-img" alt=""></td>
+                    <td>
+                      <strong>{{ detalle.producto.nombre }}</strong><br>
+                      <span class="badge-stock">Stock: {{ detalle.producto.stock }}</span>
+                    </td>
+                    <td>
+                      <div class="quantity-controls">
+                        <button class="btn btn-success btn-cart" onclick="actualizarCantidad('{{ detalle.id }}', '+')">
+                          <i class="fas fa-plus"></i>
+                        </button>
+                        <span class="quantity-display" id="cantidad-{{ detalle.id }}">{{ detalle.cantidad_producto }}</span>
+                        <button class="btn btn-danger btn-cart" onclick="disminuirCantidad('{{ detalle.id }}')">
+                          <i class="fas fa-minus"></i>
+                        </button>
+                      </div>
+
+                      <!-- ✅ Inputs ocultos necesarios -->
+                      <input type="hidden" id="producto-id-{{ detalle.id }}" value="{{ detalle.producto.id }}">
+                      <input type="hidden" id="stock-{{ detalle.producto.id }}" value="{{ detalle.producto.stock }}">
+                    </td>
+                    <td class="fw-bold" id="subtotal-{{ detalle.id }}">${{ detalle.subtotal_venta }}</td>
+                    <td></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
 
           <div class="text-end mt-4">
             <span class="total-price">Total: $<span id="total-carrito">{{ total_carrito }}</span></span>
@@ -193,78 +559,132 @@
         {% endif %}
 
         {% if productos_eliminados %}
-          <div class="mt-5">
-            <h5 class="text-danger text-center">Productos eliminados por falta de stock:</h5>
+          <div class="removed-products">
+            <h5 class="text-danger text-center mb-4">
+              <i class="fas fa-exclamation-triangle me-2"></i>Productos eliminados por falta de stock:
+            </h5>
             <ul class="list-group">
               {% for detalle in productos_eliminados %}
-                <li class="list-group-item d-flex justify-content-between">
-                  {{ detalle.producto.nombre }}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span>{{ detalle.producto.nombre }}</span>
                   <span class="badge bg-danger">Eliminado</span>
                 </li>
               {% endfor %}
             </ul>
             <div class="text-center mt-3">
-              <button class="btn btn-warning" onclick="refreshPage()">Actualizar</button>
+              <button class="btn btn-warning" onclick="refreshPage()">
+                <i class="fas fa-sync-alt me-2"></i>Actualizar
+              </button>
             </div>
           </div>
         {% endif %}
 
         {% if detalles and total_carrito > 0 %}
-          <div class="text-center mt-5">
+          <div class="delivery-form">
             <form action="/api/webpay/iniciar/" method="POST" id="form-pago">
               {% csrf_token %}
-              <div class="mb-3 text-start">
-                <label class="form-label fw-bold">Tipo de entrega</label><br>
+              <div class="mb-3">
+                <label class="form-label">
+                  <i class="fas fa-truck me-2"></i>Tipo de entrega
+                </label>
                 <select name="tipo_entrega" class="form-select" required onchange="toggleDireccion(this.value)">
                   <option value="retiro">Retiro en tienda</option>
                   <option value="despacho">Despacho a domicilio</option>
                 </select>
               </div>
-              <div class="mb-3 text-start" id="direccion_despacho_div" style="display: none;">
-                <label class="form-label fw-bold">Dirección de despacho</label>
+              <div class="mb-3" id="direccion_despacho_div" style="display: none;">
+                <label class="form-label">
+                  <i class="fas fa-map-marker-alt me-2"></i>Dirección de despacho
+                </label>
                 <textarea name="direccion_despacho" class="form-control" rows="2" placeholder="Ej: Calle 123, Santiago"></textarea>
               </div>
-              <button type="submit" class="btn btn-pay mt-3">
-                <i class="fas fa-credit-card me-2"></i> Pagar con WebPay
-              </button>
+              <div class="text-center">
+                <button type="submit" class="btn btn-pay">
+                  <i class="fas fa-credit-card me-2"></i> Pagar con WebPay
+                </button>
+              </div>
             </form>
-            <script>
-              function toggleDireccion(valor) {
-                const div = document.getElementById("direccion_despacho_div");
-                div.style.display = valor === "despacho" ? "block" : "none";
-              }
-
-              // Validación para que la dirección sea obligatoria cuando el tipo de entrega sea "despacho"
-              document.getElementById("form-pago").addEventListener("submit", function(event) {
-                const tipoEntrega = this.tipo_entrega.value;
-                const direccionDespacho = this.direccion_despacho.value.trim();
-
-                if (tipoEntrega === "despacho" && direccionDespacho === "") {
-                  event.preventDefault();
-                  alert("Por favor, ingresa la dirección de despacho para continuar con el pago.");
-                  this.direccion_despacho.focus();
-                }
-              });
-            </script>
           </div>
         {% endif %}
       {% endif %}
 
       {% if not detalles %}
-        <div class="alert alert-info text-center mt-5">
-          Tu carrito está vacío.
+        <div class="alert alert-info text-center">
+          <i class="fas fa-shopping-cart fa-3x mb-3 d-block"></i>
+          <h4>Tu carrito está vacío</h4>
+          <p class="mb-0">¡Agrega algunos productos para comenzar!</p>
         </div>
       {% endif %}
     </div>
-  </main>
+  </div>
+</main>
 
-  <footer>
-    <div class="container text-center">
-      <p class="mb-0">© 2025 FERREMAS - Todos los derechos reservados</p>
+<footer class="text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <p class="mb-0">© 2025 FERREMAS - Todos los derechos reservados</p>
+        <div class="mt-3">
+          <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
     </div>
-  </footer>
+  </div>
+</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // Navbar scroll effect
+  window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+      navbar.style.background = 'linear-gradient(135deg, rgba(111, 66, 193, 0.95), rgba(90, 50, 163, 0.95))';
+      navbar.style.backdropFilter = 'blur(10px)';
+    } else {
+      navbar.style.background = 'linear-gradient(135deg, var(--primary-color), #5a32a3)';
+      navbar.style.backdropFilter = 'none';
+    }
+  });
+
+  // Intersection Observer para animaciones
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, observerOptions);
+
+  // Observar elementos con animación
+  document.querySelectorAll('.fade-in-up').forEach(element => {
+    element.style.animationPlayState = 'paused';
+    observer.observe(element);
+  });
+
+  function toggleDireccion(valor) {
+    const div = document.getElementById("direccion_despacho_div");
+    div.style.display = valor === "despacho" ? "block" : "none";
+  }
+
+  // Validación para que la dirección sea obligatoria cuando el tipo de entrega sea "despacho"
+  document.getElementById("form-pago").addEventListener("submit", function(event) {
+    const tipoEntrega = this.tipo_entrega.value;
+    const direccionDespacho = this.direccion_despacho.value.trim();
+
+    if (tipoEntrega === "despacho" && direccionDespacho === "") {
+      event.preventDefault();
+      alert("Por favor, ingresa la dirección de despacho para continuar con el pago.");
+      this.direccion_despacho.focus();
+    }
+  });
+
   function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== "") {
@@ -372,78 +792,32 @@
         const subtotalConvertido = data.subtotal_venta * tasa;
         const totalConvertido = data.total_carrito * tasa;
 
-        document.getElementById(`subtotal-${detalleId}`).innerText =
-          monedaActual === "CLP"
-            ? '$' + data.subtotal_venta.toLocaleString()
-            : `${monedaActual} $${subtotalConvertido.toFixed(2)}`;
-
-        document.getElementById('total-carrito').innerText =
-          monedaActual === "CLP"
-            ? data.total_carrito.toLocaleString()
-            : `${monedaActual} $${totalConvertido.toFixed(2)}`;
+        document.getElementById(`subtotal-${detalleId}`).innerText = `${monedaActual} $${subtotalConvertido.toFixed(2)}`;
+        document.getElementById("total-carrito").innerText = `${monedaActual} $${totalConvertido.toFixed(2)}`;
       } else {
-        alert(data.detail || "Error al actualizar.");
+        alert("Error al actualizar la cantidad: " + data.error);
       }
     } catch (error) {
-      alert("Error de red.");
+      console.error("Error al actualizar la cantidad:", error);
+      alert("Ocurrió un error al actualizar la cantidad. Por favor, inténtalo de nuevo.");
     }
   }
-
   async function disminuirCantidad(detalleId) {
     const cantidadElement = document.getElementById(`cantidad-${detalleId}`);
     let cantidad = parseInt(cantidadElement.innerText);
+    if (cantidad <= 1) return;
 
-    if (cantidad === 1) {
-      try {
-        const response = await fetch(`/api/carrito/detalle/${detalleId}/`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie("csrftoken"),
-          },
-          body: JSON.stringify({ cantidad_producto: 0 })
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          document.getElementById(`detalle-row-${detalleId}`).remove();
-
-          const monedaActual = localStorage.getItem("moneda") || "CLP";
-          let tasa = 1;
-          if (monedaActual !== "CLP") {
-            try {
-              const res = await fetch("https://open.er-api.com/v6/latest/CLP");
-              const dataTasa = await res.json();
-              tasa = dataTasa.rates[monedaActual] || 1;
-            } catch {
-              tasa = 1;
-            }
-          }
-
-          const totalConvertido = data.total_carrito * tasa;
-          document.getElementById('total-carrito').innerText =
-            monedaActual === "CLP"
-              ? data.total_carrito.toLocaleString()
-              : `${monedaActual} $${totalConvertido.toFixed(2)}`;
-
-          if (data.total_carrito === 0) {
-            window.location.reload();
-          }
-        } else {
-          alert(data.detail || "Error al eliminar.");
-        }
-      } catch (error) {
-        alert("Error al conectar.");
-      }
-    } else {
-      actualizarCantidad(detalleId, '-');
-    }
+    await actualizarCantidad(detalleId, '-');
   }
-
   function refreshPage() {
-    window.location.reload();
+    location.reload();
   }
+  document.addEventListener("DOMContentLoaded", function () {
+    const monedaSelector = document.getElementById('moneda-selector');
+    if (monedaSelector) {
+      monedaSelector.value = localStorage.getItem("moneda") || "CLP";
+    }
+  });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

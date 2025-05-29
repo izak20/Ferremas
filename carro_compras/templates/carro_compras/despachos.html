@@ -2,112 +2,454 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Despachos - FERREMAS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      font-family: 'Arial', sans-serif;
+      box-sizing: border-box;
     }
-    .fondo {
-      background: url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Yle55W6QKWSoQbE4/herramientas-manuales-basicas-02-2022-07-AE0vvPgGKDiqlZEX.jpg') no-repeat center center fixed;
-      background-size: cover;
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #2E7D32 0%, #388E3C 50%, #4CAF50 100%);
       min-height: 100vh;
-      padding-top: 40px;
-      padding-bottom: 40px;
+      overflow-x: hidden;
     }
-    .container {
-      background-color: #388E3C;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 30px;
-      margin-top: 50px;
-      color: black;
+
+    /* Animated background particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
     }
-    .card-despacho {
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: float 8s infinite linear;
     }
-    .btn-volver {
-      background: linear-gradient(to bottom, #2E7D32, #81C784);
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main container */
+    .main-container {
+      position: relative;
+      z-index: 2;
+      padding: 2rem 1rem;
+    }
+
+    /* Glassmorphism cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+      animation: slideInUp 0.8s ease-out;
+    }
+
+    @keyframes slideInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Modern title */
+    .modern-title {
+      background: linear-gradient(135deg, #fff, #f8f9fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Section headers */
+    .section-header {
       color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-header i {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.8rem;
+    }
+
+    /* Modern buttons */
+    .btn-modern {
+      background: linear-gradient(135deg, #2E7D32, #4CAF50);
       border: none;
       border-radius: 50px;
-      padding: 10px 30px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s, transform 0.3s;
+      padding: 12px 24px;
+      font-weight: 600;
+      color: white;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3);
     }
-    .btn-volver:hover {
-      background: linear-gradient(to bottom, #45a049, #66bb6a);
-      transform: scale(1.05);
+
+    .btn-modern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
     }
-    .table th, .table td {
+
+    .btn-modern:hover::before {
+      left: 100%;
+    }
+
+    .btn-modern:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 35px rgba(46, 125, 50, 0.4);
+      color: white;
+    }
+
+    .btn-success-modern {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success-modern:hover {
+      box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4);
+      color: white;
+    }
+
+    .btn-secondary-modern {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary-modern:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      color: white;
+    }
+
+    /* Filter section */
+    .filters-section {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-control, .form-select {
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: #4CAF50;
+      box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.15);
+      transform: translateY(-1px);
+    }
+
+    /* Modern table */
+    .modern-table {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .modern-table table {
+      margin: 0;
+    }
+
+    .modern-table thead {
+      background: linear-gradient(135deg, #2E7D32, #4CAF50);
+      color: white;
+    }
+
+    .modern-table th {
+      padding: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.9rem;
+      border: none;
+    }
+
+    .modern-table td {
+      padding: 1rem;
+      border: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       vertical-align: middle;
-      color: black;
+      color: #333;
     }
-    .table tbody tr {
-      background-color: rgba(255, 255, 255, 0.9);
+
+    .modern-table tbody tr {
+      transition: all 0.3s ease;
     }
+
+    .modern-table tbody tr:hover {
+      background: rgba(76, 175, 80, 0.05);
+      transform: scale(1.01);
+    }
+
+    /* Alert styling */
+    .modern-alert {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 12px;
+      color: white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .modern-alert-info {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .modern-alert-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    /* Loading animation */
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 1rem 0.5rem;
+      }
+      
+      .glass-card {
+        padding: 1.5rem;
+      }
+      
+      .modern-title {
+        font-size: 2rem;
+      }
+      
+      .modern-table {
+        font-size: 0.9rem;
+      }
+      
+      .modern-table th,
+      .modern-table td {
+        padding: 0.75rem 0.5rem;
+      }
+    }
+
+    /* Action buttons in table */
+    .table-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-sm-modern {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 20px;
+    }
+
+    /* Form inline styling */
     .form-inline {
       display: flex;
       gap: 10px;
+      align-items: center;
     }
-    #buscador {
-      max-width: 400px;
-      margin: 20px auto;
+
+    .form-inline .form-control {
+      flex: 1;
+      min-width: 150px;
     }
-    footer {
+
+    /* Empty state */
+    .empty-state {
       text-align: center;
-      margin-top: 40px;
+      padding: 2rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    /* Footer */
+    .modern-footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: rgba(255, 255, 255, 0.6);
       font-size: 0.9rem;
-      color: #777;
+    }
+
+    /* Notification animation */
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .notification-enter {
+      animation: slideInRight 0.5s ease-out;
+    }
+
+    /* Truck and delivery icons styling */
+    .section-header .fa-truck {
+      color: #FFD700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    .section-header .fa-check-circle {
+      color: #4CAF50;
+      text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
     }
   </style>
 </head>
 <body>
 
-<!-- CSRF token oculto -->
-<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+  <!-- CSRF token oculto -->
+  <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
-<div class="fondo">
-  <div class="container">
-    <h2 class="text-center mb-4">Gestión de Despachos</h2>
+  <!-- Animated particles -->
+  <div class="particles" id="particles"></div>
 
-    <div class="text-center mb-4">
-      <a href="{% url 'panel_administracion' %}" class="btn btn-volver">
-        <i class="fas fa-arrow-left me-2"></i> Volver al Panel de Administración
-      </a>
-    </div>
+  <div class="main-container">
+    <div class="container-fluid">
+      
+      <!-- Header -->
+      <div class="glass-card">
+        <h1 class="modern-title">
+          <i class="fas fa-shipping-fast"></i>
+          Gestión de Despachos
+        </h1>
+        
+        <!-- Back button -->
+        <div class="text-center mb-4">
+          <a href="{% url 'panel_administracion' %}" class="btn btn-modern btn-secondary-modern">
+            <i class="fas fa-arrow-left me-2"></i>
+            Volver al Panel de Administración
+          </a>
+        </div>
+      </div>
 
-    <input type="text" id="buscador" class="form-control text-center" placeholder="Buscar por nombre o RUT..." onkeyup="filtrarTablas()">
+      <!-- Search Filter -->
+      <div class="glass-card">
+        <div class="filters-section">
+          <div class="row">
+            <div class="col-12">
+              <label class="form-label text-white fw-bold">
+                <i class="fas fa-search me-1"></i>
+                Buscar por nombre o RUT
+              </label>
+              <input type="text" id="buscador" class="form-control" placeholder="Escribir nombre o RUT..." onkeyup="filtrarTablas()">
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <div id="mensaje" class="mt-3"></div>
+      <!-- Message container -->
+      <div id="mensaje" class="mt-3"></div>
 
-    <div class="card-despacho">
-      <h4>🚚 Despachos Pendientes</h4>
-      <div id="tablaPendientes"></div>
-    </div>
+      <!-- Pending Deliveries -->
+      <div class="glass-card">
+        <h3 class="section-header">
+          <i class="fas fa-truck"></i>
+          Despachos Pendientes
+        </h3>
+        <div class="modern-table">
+          <div id="tablaPendientes"></div>
+        </div>
+      </div>
 
-    <div class="card-despacho">
-      <h4>✅ Despachos Completados</h4>
-      <div id="tablaCompletados"></div>
+      <!-- Completed Deliveries -->
+      <div class="glass-card">
+        <h3 class="section-header">
+          <i class="fas fa-check-circle"></i>
+          Despachos Completados
+        </h3>
+        <div class="modern-table">
+          <div id="tablaCompletados"></div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modern-footer">
+        <p>© 2025 FERREMAS - Gestión de Despachos</p>
+      </div>
+
     </div>
   </div>
 
-  <footer>
-    <p>© 2025 FERREMAS - Gestión de Despachos</p>
-  </footer>
-</div>
-
-<!-- Scripts -->
 <script>
+  // Create animated particles
+  function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 60;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 8 + 's';
+      particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+      particlesContainer.appendChild(particle);
+    }
+  }
+
+  // Initialize particles
+  createParticles();
+
   function getCSRFToken() {
     return document.querySelector('[name=csrfmiddlewaretoken]')?.value;
   }
@@ -126,42 +468,61 @@
   function renderTabla(ventas, contenedorId, permitirConfirmar) {
     const contenedor = document.getElementById(contenedorId);
     if (ventas.length === 0) {
-      contenedor.innerHTML = '<div class="alert alert-info">No hay despachos ' + (permitirConfirmar ? 'pendientes' : 'completados') + '.</div>';
+      contenedor.innerHTML = `
+        <div class="empty-state">
+          <i class="fas ${permitirConfirmar ? 'fa-truck' : 'fa-check-circle'}"></i>
+          <div>No hay despachos ${permitirConfirmar ? 'pendientes' : 'completados'}.</div>
+        </div>
+      `;
       return;
     }
 
-    let tabla = `<div class="table-responsive"><table class="table table-hover table-bordered align-middle">
-      <thead class="${permitirConfirmar ? 'table-warning' : 'table-light'}">
+    let tabla = `<table class="table table-hover mb-0">
+      <thead>
         <tr>
-          <th>ID</th><th>Cliente</th><th>RUT</th><th>Dirección</th><th>Total</th><th>Fecha</th>${permitirConfirmar ? '<th>Confirmar Entrega</th>' : ''}
+          <th><i class="fas fa-hashtag me-1"></i>ID</th>
+          <th><i class="fas fa-user me-1"></i>Cliente</th>
+          <th><i class="fas fa-id-badge me-1"></i>RUT</th>
+          <th><i class="fas fa-map-marker-alt me-1"></i>Dirección</th>
+          <th><i class="fas fa-dollar-sign me-1"></i>Total</th>
+          <th><i class="fas fa-calendar me-1"></i>Fecha</th>
+          ${permitirConfirmar ? '<th><i class="fas fa-check me-1"></i>Confirmar Entrega</th>' : ''}
         </tr>
       </thead><tbody>`;
 
     ventas.forEach(v => {
       tabla += `<tr>
-        <td>${v.id}</td>
+        <td><strong>${v.id}</strong></td>
         <td>${v.id_usuario.first_name} ${v.id_usuario.last_name}</td>
-        <td>${v.id_usuario.rut}</td>
+        <td><code>${v.id_usuario.rut}</code></td>
         <td>${v.direccion_despacho || 'No especificada'}</td>
-        <td>$${v.total_venta}</td>
+        <td><strong>$${v.total_venta}</strong></td>
         <td>${new Date(v.fecha_compra).toLocaleString()}</td>`;
       if (permitirConfirmar) {
         tabla += `
           <td>
             <form onsubmit="confirmarDespacho(event, ${v.id})">
-              <button type="submit" class="btn btn-success btn-sm">Confirmar</button>
+              <button type="submit" class="btn btn-modern btn-success-modern btn-sm-modern">
+                <i class="fas fa-check"></i> Confirmar
+              </button>
             </form>
           </td>`;
       }
       tabla += `</tr>`;
     });
 
-    tabla += '</tbody></table></div>';
+    tabla += '</tbody></table>';
     contenedor.innerHTML = tabla;
   }
 
   async function confirmarDespacho(event, ventaId) {
     event.preventDefault();
+    const submitBtn = event.target.querySelector('button');
+    const originalContent = submitBtn.innerHTML;
+
+    // Show loading state
+    submitBtn.innerHTML = '<div class="loading-spinner"></div>';
+    submitBtn.disabled = true;
 
     const res = await fetch(`/api/despachos/confirmar/${ventaId}/`, {
       method: 'POST',
@@ -175,11 +536,15 @@
     const msgDiv = document.getElementById("mensaje");
 
     if (res.ok) {
-      msgDiv.innerHTML = `<div class="alert alert-success">${data.mensaje}</div>`;
+      msgDiv.innerHTML = `<div class="modern-alert notification-enter"><i class="fas fa-check-circle me-2"></i>${data.mensaje}</div>`;
       cargarDespachos();
     } else {
-      msgDiv.innerHTML = `<div class="alert alert-danger">${data.detail || 'Error al confirmar despacho'}</div>`;
+      msgDiv.innerHTML = `<div class="modern-alert modern-alert-danger notification-enter"><i class="fas fa-exclamation-circle me-2"></i>${data.detail || 'Error al confirmar despacho'}</div>`;
     }
+
+    // Reset button
+    submitBtn.innerHTML = originalContent;
+    submitBtn.disabled = false;
 
     setTimeout(() => msgDiv.innerHTML = '', 4000);
   }
@@ -199,6 +564,7 @@
   window.addEventListener('DOMContentLoaded', cargarDespachos);
 </script>
 
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

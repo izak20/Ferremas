@@ -4,200 +4,500 @@
 <head>
   <meta charset="UTF-8">
   <title>Boleta FERREMAS</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: Arial, sans-serif;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .fondo {
-      background: url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Yle55W6QKWSoQbE4/herramientas-manuales-basicas-02-2022-07-AE0vvPgGKDiqlZEX.jpg') no-repeat center center fixed;
-      background-size: cover;
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
-      padding: 40px 15px;
+      overflow-x: hidden;
     }
 
+    /* Animated background particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: float 8s infinite linear;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main container */
+    .main-container {
+      position: relative;
+      z-index: 2;
+      padding: 2rem 1rem;
+    }
+
+    /* Logo container */
     .logo-container {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 2rem;
+      animation: slideInDown 0.8s ease-out;
     }
 
     .logo-container img {
       height: 80px;
-      background-color: white;
-      padding: 10px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
-    .boleta-container {
-      background: rgba(255, 255, 255, 0.97);
-      padding: 40px;
-      border-radius: 10px;
-      max-width: 800px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      color: black;
+    /* Glassmorphism cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+      animation: slideInUp 0.8s ease-out;
+      color: white;
     }
 
+    @keyframes slideInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes slideInDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Modern title */
+    .modern-title {
+      background: linear-gradient(135deg, #fff, #f8f9fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Header section */
     .header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 10px;
-      margin-bottom: 30px;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .empresa-info {
-      text-align: right;
-      font-size: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.95rem;
+      line-height: 1.6;
     }
 
-    .datos-cliente {
-      margin-bottom: 30px;
-      font-size: 15px;
+    .empresa-info strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .cliente-info {
+      text-align: right;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .cliente-info strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* Table styling */
+    .table-container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 2rem;
+      overflow-x: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 20px;
-      font-size: 14px;
-    }
-
-    th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
+      font-size: 0.95rem;
     }
 
     th {
-      background-color: #f0f0f0;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-weight: 700;
+      padding: 1rem;
       text-align: left;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    /* Total section */
+    .total-section {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 1.5rem;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: right;
+      margin-bottom: 2rem;
     }
 
     .total {
-      text-align: right;
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Modern buttons */
+    .btn-modern {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 50px;
+      padding: 12px 24px;
+      font-weight: 600;
+      color: white;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      margin: 0.5rem;
+    }
+
+    .btn-modern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-modern:hover::before {
+      left: 100%;
+    }
+
+    .btn-modern:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn-success-modern {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success-modern:hover {
+      box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4);
+      color: white;
+    }
+
+    .btn-secondary-modern {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary-modern:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      color: white;
     }
 
     .print-btn {
       text-align: center;
-      margin-top: 20px;
+      margin: 2rem 0;
     }
 
-    .print-btn button {
-      background: linear-gradient(to bottom, #2E7D32, #81C784);
+    /* Badge styling */
+    .badge-payment {
+      background: linear-gradient(135deg, #10b981, #059669);
       color: white;
-      padding: 10px 30px;
-      font-size: 16px;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s;
-      margin-bottom: 10px;
-    }
-
-    .print-btn button:hover {
-      background: linear-gradient(to bottom, #45a049, #66bb6a);
-      transform: scale(1.05);
-    }
-
-    .btn-volver {
-      background: linear-gradient(to bottom, #455A64, #90A4AE);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 10px 30px;
-      font-size: 16px;
-      font-weight: bold;
-      text-decoration: none;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-size: 0.8rem;
+      font-weight: 600;
       display: inline-block;
-      transition: background-color 0.3s, transform 0.3s;
+      margin-top: 0.5rem;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
     }
 
-    .btn-volver:hover {
-      background: linear-gradient(to bottom, #607D8B, #B0BEC5);
-      transform: scale(1.05);
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 1rem 0.5rem;
+      }
+      
+      .glass-card {
+        padding: 1.5rem;
+      }
+      
+      .modern-title {
+        font-size: 2rem;
+      }
+
+      .header {
+        flex-direction: column;
+      }
+
+      .cliente-info {
+        text-align: left;
+      }
+
+      table {
+        font-size: 0.85rem;
+      }
+
+      th, td {
+        padding: 0.75rem 0.5rem;
+      }
     }
 
+    @media (max-width: 480px) {
+      .total {
+        font-size: 1.5rem;
+      }
+      
+      .btn-modern {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        margin: 0.25rem;
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Print styles */
     @media print {
-      .print-btn {
+      body {
+        background: white !important;
+      }
+      
+      .particles {
         display: none;
+      }
+      
+      .glass-card {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+      }
+      
+      .print-btn {
+        display: none !important;
+      }
+      
+      .empresa-info, .cliente-info, .table-container, .total-section {
+        background: #f8f9fa !important;
+        color: black !important;
+      }
+      
+      th {
+        background: #e9ecef !important;
+        color: black !important;
+      }
+      
+      td {
+        color: black !important;
+      }
+      
+      .total {
+        color: black !important;
+        text-shadow: none !important;
+      }
+      
+      .badge-payment {
+        background: #10b981 !important;
+        color: white !important;
       }
     }
   </style>
 </head>
 <body>
-<div class="fondo">
 
-  <!-- Logo flotante -->
-  <div class="logo-container">
-    <img src="{% static 'img/logo.png' %}" alt="FERREMAS">
+  <!-- Animated particles -->
+  <div class="particles" id="particles"></div>
+
+  <div class="main-container">
+    
+    <!-- Logo flotante -->
+    <div class="logo-container">
+      <img src="{% static 'img/logo.png' %}" alt="FERREMAS">
+    </div>
+
+    <div class="glass-card" style="max-width: 900px; margin: 0 auto;">
+      
+      <!-- Title -->
+      <h1 class="modern-title">
+        <i class="fas fa-receipt"></i>
+        BOLETA DE VENTA
+      </h1>
+      
+      <!-- Header with company and client info -->
+      <div class="header">
+        <div class="empresa-info">
+          <strong><i class="fas fa-building me-2"></i>FERREMAS</strong><br>
+          <strong>RUT:</strong> 76.123.456-7<br>
+          <strong>Dirección:</strong> Av. Principal 123, Santiago<br>
+          <strong>Email:</strong> contacto@ferremas.cl<br>
+          <strong>Teléfono:</strong> +56 9 1234 5678
+        </div>
+        
+        <div class="cliente-info">
+          <strong><i class="fas fa-file-invoice me-2"></i>Boleta Nº:</strong> {{ venta.id }}<br>
+          <strong><i class="fas fa-calendar me-2"></i>Fecha:</strong> {{ venta.fecha_compra|date:"d/m/Y H:i" }}<br>
+          <strong><i class="fas fa-user me-2"></i>Cliente:</strong><br>
+          {{ venta.id_usuario.first_name }} {{ venta.id_usuario.last_name }}<br>
+          <small>({{ venta.id_usuario.rut }})</small><br>
+          
+          <div class="badge-payment">
+            <i class="fas fa-credit-card me-1"></i>
+            WebPay
+          </div><br>
+          
+          <strong><i class="fas fa-credit-card me-2"></i>Tarjeta:</strong>
+          {% if venta.ultimos_digitos %}
+          **** **** **** {{ venta.ultimos_digitos }}
+          {% else %}
+          No disponible
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Products table -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th><i class="fas fa-box me-2"></i>Producto</th>
+              <th><i class="fas fa-sort-numeric-up me-2"></i>Cantidad</th>
+              <th><i class="fas fa-dollar-sign me-2"></i>Precio Unitario</th>
+              <th><i class="fas fa-calculator me-2"></i>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for d in detalles %}
+            <tr>
+              <td>{{ d.nombre_producto }}</td>
+              <td>{{ d.cantidad_producto }}</td>
+              <td>${{ d.precio_unitario }}</td>
+              <td>${{ d.subtotal_venta }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Total section -->
+      <div class="total-section">
+        <div class="total">
+          <i class="fas fa-coins me-2"></i>
+          Total: ${{ venta.total_venta }}
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="print-btn">
+        <button onclick="window.print()" class="btn-modern btn-success-modern">
+          <i class="fas fa-print me-2"></i>
+          Imprimir / Guardar como PDF
+        </button>
+        
+        <a href="{% url 'historial_ventas' %}" class="btn-modern btn-secondary-modern">
+          <i class="fas fa-arrow-left me-2"></i>
+          Volver a Historial
+        </a>
+      </div>
+      
+    </div>
   </div>
 
-  <div class="boleta-container">
-    <div class="header">
-      <div>
-        <strong>FERREMAS</strong><br>
-        RUT: 76.123.456-7<br>
-        Av. Principal 123, Santiago<br>
-        contacto@ferremas.cl<br>
-        +56 9 1234 5678
-      </div>
-      <div class="empresa-info">
-        <strong>Boleta Nº:</strong> {{ venta.id }}<br>
-        <strong>Fecha:</strong> {{ venta.fecha_compra|date:"d/m/Y H:i" }}<br>
-        <strong>Cliente:</strong><br>
-        {{ venta.id_usuario.first_name }} {{ venta.id_usuario.last_name }}<br>
-        ({{ venta.id_usuario.rut }})<br>
-        <strong>Método de Pago:</strong> WebPay<br>
-        <strong>Tarjeta:</strong>
-        {% if venta.ultimos_digitos %}
-        **** **** **** {{ venta.ultimos_digitos }}
-        {% else %}
-        No disponible
-        {% endif %}
-      </div>
-    </div>
+<script>
+  // Create animated particles
+  function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 60;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 8 + 's';
+      particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+      particlesContainer.appendChild(particle);
+    }
+  }
 
-    <table>
-      <thead>
-        <tr>
-          <th>Producto</th>
-          <th>Cantidad</th>
-          <th>Precio Unitario</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for d in detalles %}
-        <tr>
-          <td>{{ d.nombre_producto }}</td>
-          <td>{{ d.cantidad_producto }}</td>
-          <td>${{ d.precio_unitario }}</td>
-          <td>${{ d.subtotal_venta }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  // Initialize particles
+  createParticles();
+</script>
 
-    <div class="total">
-      Total: ${{ venta.total_venta }}
-    </div>
-
-    <div class="print-btn">
-      <button onclick="window.print()">Imprimir / Guardar como PDF</button>
-    </div>
-
-    <div class="print-btn">
-      <a href="{% url 'historial_ventas' %}" class="btn-volver">Volver a Historial</a>
-    </div>
-  </div>
-</div>
 </body>
 </html>

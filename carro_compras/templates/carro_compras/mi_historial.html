@@ -7,30 +7,359 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
+    :root {
+      --primary-color: #6f42c1;
+      --secondary-color: #fd7e14;
+      --accent-color: #20c997;
+      --dark-color: #212529;
+      --light-color: #f8f9fa;
+      --success-color: #198754;
+      --warning-color: #ffc107;
+    }
+
     html, body {
       height: 100%;
       margin: 0;
     }
-    .main-wrapper {
-      flex: 1;
-    }
+
     body {
-      background-color: #f4f4f9;
+      background: linear-gradient(135deg, var(--light-color) 0%, #e9ecef 100%);
       display: flex;
       flex-direction: column;
     }
-    .producto-img { width: 60px; height: 60px; object-fit: contain; }
-    .accordion-button:not(.collapsed) { background-color: #E8F5E9; color: #2E7D32; }
-    .accordion-button { font-weight: 600; }
-    .estado-entrega { font-weight: bold; }
-    .estado-entrega.completado { color: green; }
-    .estado-entrega.pendiente { color: #FF8C00; }
-    footer {
-      background-color: #2E7D32;
-      color: white;
+
+    .main-wrapper {
+      flex: 1;
+    }
+
+    /* Navbar Bootstrap personalizada */
+    .navbar {
+      background: linear-gradient(135deg, var(--primary-color), #5a32a3) !important;
+      box-shadow: 0 4px 20px rgba(111, 66, 193, 0.3);
+      padding: 1rem 0;
+    }
+
+    .navbar-brand img {
+      transition: all 0.3s ease;
+      filter: brightness(1.1);
+    }
+
+    .navbar-brand:hover img {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .navbar-nav .nav-link {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-weight: 500;
+      margin: 0 0.5rem;
+      border-radius: 20px;
+      padding: 0.5rem 1rem !important;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white !important;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-light {
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-light:hover {
+      background: var(--secondary-color);
+      border-color: var(--secondary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(253, 126, 20, 0.4);
+    }
+
+    /* Contenedor principal */
+    .main-container {
+      padding: 120px 0 80px 0;
+      min-height: 100vh;
+    }
+
+    .page-title {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: var(--primary-color);
       text-align: center;
-      padding: 20px 0;
+      margin-bottom: 3rem;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+      border-radius: 2px;
+    }
+
+    /* Secciones de compras */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--dark-color);
+      margin: 3rem 0 2rem 0;
+      padding: 1rem 2rem;
+      background: white;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-title.pendientes {
+      border-left: 6px solid var(--warning-color);
+    }
+
+    .section-title.completadas {
+      border-left: 6px solid var(--success-color);
+    }
+
+    /* Accordion modernizado */
+    .accordion {
+      margin-bottom: 2rem;
+    }
+
+    .accordion-item {
+      border: none;
+      border-radius: 20px !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .accordion-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .accordion-button {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 20px !important;
+      background: white;
+      color: var(--dark-color);
+      border: none;
+      padding: 1.5rem 2rem;
+      box-shadow: none;
+      transition: all 0.3s ease;
+    }
+
+    .accordion-button:not(.collapsed) {
+      background: linear-gradient(135deg, rgba(111, 66, 193, 0.1), rgba(32, 201, 151, 0.1));
+      color: var(--primary-color);
+      box-shadow: none;
+    }
+
+    .accordion-button:focus {
+      box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+    }
+
+    .accordion-button::after {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236f42c1'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-body {
+      padding: 2rem;
+      background: white;
+      border-top: 1px solid rgba(111, 66, 193, 0.1);
+    }
+
+    /* Información de entrega */
+    .entrega-info {
+      background: linear-gradient(135deg, rgba(32, 201, 151, 0.1), rgba(111, 66, 193, 0.05));
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .entrega-info p {
+      margin: 0.5rem 0;
+      font-weight: 600;
+      color: var(--dark-color);
+    }
+
+    .estado-entrega {
+      font-weight: 800;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    .estado-entrega.completado {
+      background: linear-gradient(45deg, var(--success-color), #146c43);
+      color: white;
+      box-shadow: 0 4px 15px rgba(25, 135, 84, 0.3);
+    }
+
+    .estado-entrega.pendiente {
+      background: linear-gradient(45deg, var(--warning-color), #e6a700);
+      color: var(--dark-color);
+      box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    }
+
+    /* Tabla modernizada */
+    .table {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border: none;
+    }
+
+    .table thead th {
+      background: linear-gradient(135deg, var(--primary-color), #5a32a3);
+      color: white;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.9rem;
+      border: none;
+      padding: 1.2rem 1rem;
+    }
+
+    .table tbody td {
+      vertical-align: middle;
+      padding: 1.2rem 1rem;
+      border: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      font-weight: 500;
+    }
+
+    .table tbody tr:hover {
+      background: rgba(111, 66, 193, 0.03);
+      transform: scale(1.002);
+      transition: all 0.2s ease;
+    }
+
+    .producto-img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 15px;
+      background: linear-gradient(135deg, rgba(111, 66, 193, 0.1), rgba(32, 201, 151, 0.1));
+      padding: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .producto-img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Alert modernizado */
+    .alert-info {
+      background: linear-gradient(135deg, rgba(111, 66, 193, 0.1), rgba(32, 201, 151, 0.05));
+      border: 2px solid rgba(111, 66, 193, 0.2);
+      border-radius: 20px;
+      color: var(--primary-color);
+      font-weight: 600;
+      padding: 2rem;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    /* Footer modernizado */
+    footer {
+      background: linear-gradient(135deg, var(--dark-color), #343a40);
+      color: white;
+      padding: 3rem 0;
+      margin-top: 4rem;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+
+    /* Animaciones */
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Navbar scroll effect */
+    .navbar-scrolled {
+      background: linear-gradient(135deg, rgba(111, 66, 193, 0.95), rgba(90, 50, 163, 0.95)) !important;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page-title {
+        font-size: 2rem;
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+        padding: 1rem 1.5rem;
+      }
+      
+      .accordion-button {
+        font-size: 1rem;
+        padding: 1rem 1.5rem;
+      }
+      
+      .accordion-body {
+        padding: 1.5rem;
+      }
+      
+      .produto-img {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .main-container {
+        padding: 100px 0 60px 0;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .navbar-nav {
+        text-align: center;
+      }
+      
+      .entrega-info {
+        padding: 1rem;
+      }
+      
+      .table {
+        font-size: 0.9rem;
+      }
+      
+      .table thead th,
+      .table tbody td {
+        padding: 0.8rem 0.5rem;
+      }
     }
   </style>
 </head>
@@ -38,77 +367,106 @@
   <div class="main-wrapper d-flex flex-column min-vh-100">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2E7D32;">
-      <div class="container">
-        <a class="navbar-brand" href="/">
-          <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 70px; border-radius: 15px 0 15px 0;">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <img src="https://i.ibb.co/pBhm08Vn/logo.png" alt="logo" style="height: 70px; border-radius: 15px 0 15px 0;">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="menu">
-          <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" href="/productos/">Productos</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'vista_ofertas' %}">Ofertas</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}">Contacto</a></li>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="/productos/">Productos</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'vista_ofertas' %}">Ofertas</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}">Contacto</a></li>
 
-            {% if user.is_authenticated %}
-              <li class="nav-item ms-3">
-                <span class="text-white me-3">Hola, {{ user.username }}</span>
-              </li>
-              <li class="nav-item ms-2">
-                <a class="btn btn-outline-light px-3 py-2" href="/usuarios/cerrar-sesion/">
-                  <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
-                </a>
-              </li>
-            {% else %}
-              <li class="nav-item ms-3">
-                <a class="btn btn-outline-light d-flex align-items-center px-3 py-2" href="/usuarios/iniciosesion/">
-                  <i class="fas fa-user me-2"></i> Iniciar Sesión
-                </a>
-              </li>
-            {% endif %}
 
-            {% if user.is_staff %}
-              <li class="nav-item ms-2">
-                <a class="nav-link" href="{% url 'panel_administracion' %}">Panel de Administración</a>
-              </li>
-            {% endif %}
+        {% if user.is_authenticated %}
+          <li class="nav-item ms-2">
+            <a class="nav-link" href="{% url 'vista_carrito' %}">
+              <i class="fas fa-shopping-cart"></i> Carrito
+            </a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="nav-link" href="{% url 'mi_historial_compras' %}">
+              <i class="fas fa-history"></i> Mis Compras
+            </a>
+          </li>
+        {% endif %}
 
-            {% if user.is_authenticated %}
-              <li class="nav-item ms-2">
-                <a class="nav-link" href="{% url 'vista_carrito' %}">
-                  <i class="fas fa-shopping-cart"></i> Carrito
-                </a>
-              </li>
-              <li class="nav-item ms-2">
-                <a class="nav-link" href="{% url 'mi_historial_compras' %}">
-                  <i class="fas fa-history"></i> Mis Compras
-                </a>
-              </li>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
-    </nav>
+        {% if user.is_staff %}
+          <li class="nav-item ms-2">
+            <a class="nav-link" href="{% url 'panel_administracion' %}">
+              <i class="fas fa-cog me-1"></i> Panel Admin
+            </a>
+          </li>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+          <li class="nav-item ms-3">
+            <span class="text-white me-3 fw-bold">Hola, {{ user.username }}</span>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="btn btn-outline-light px-3 py-2" href="/usuarios/cerrar-sesion/">
+              <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+            </a>
+          </li>
+        {% else %}
+          <li class="nav-item ms-3">
+            <a class="btn btn-outline-light d-flex align-items-center px-3 py-2" href="/usuarios/iniciosesion/">
+              <i class="fas fa-user me-2"></i> Iniciar Sesión
+            </a>
+          </li>
+        {% endif %}
+
+      </ul>
+    </div>
+  </div>
+</nav>
 
     <!-- Contenido -->
-    <div class="container mt-5 mb-5">
-      <h2 class="text-center mb-4">Mis Compras en FERREMAS</h2>
-      <div class="accordion" id="historialCompras"></div>
+    <div class="container main-container">
+      <h1 class="page-title fade-in-up">Mis Compras en FERREMAS</h1>
+      <div class="accordion fade-in-up" id="historialCompras"></div>
     </div>
 
   </div> <!-- cierre de main-wrapper -->
 
-  <!-- Footer -->
-  <footer>
-    <div class="container"><p class="mb-0">© 2025 FERREMAS - Todos los derechos reservados</p></div>
-  </footer>
-
   <!-- Scripts -->
   <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('navbar-scrolled');
+      } else {
+        navbar.classList.remove('navbar-scrolled');
+      }
+    });
+
+    // Intersection Observer para animaciones
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, observerOptions);
+
+    // Observar elementos con animación
+    document.querySelectorAll('.fade-in-up').forEach(element => {
+      element.style.animationPlayState = 'paused';
+      observer.observe(element);
+    });
+
     async function cargarMisCompras() {
       const response = await fetch("/api/mis-compras/");
       const ventas = await response.json();
@@ -116,13 +474,13 @@
       contenedor.innerHTML = "";
 
       if (!Array.isArray(ventas) || ventas.length === 0) {
-        contenedor.innerHTML = '<div class="alert alert-info">No has realizado compras todavía.</div>';
+        contenedor.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No has realizado compras todavía.</div>';
         return;
       }
 
       const pendientes = ventas.filter(v => v.estado_entrega !== "completado");
       if (pendientes.length > 0) {
-        contenedor.insertAdjacentHTML("beforeend", `<h4>🕓 Compras Pendientes</h4>`);
+        contenedor.insertAdjacentHTML("beforeend", `<h4 class="section-title pendientes"><i class="fas fa-clock"></i> Compras Pendientes</h4>`);
         pendientes.forEach(venta => {
           contenedor.insertAdjacentHTML("beforeend", generarHTMLVenta(venta, false));
         });
@@ -130,7 +488,7 @@
 
       const completadas = ventas.filter(v => v.estado_entrega === "completado");
       if (completadas.length > 0) {
-        contenedor.insertAdjacentHTML("beforeend", `<h4 class="mt-4">✅ Compras Completadas</h4>`);
+        contenedor.insertAdjacentHTML("beforeend", `<h4 class="section-title completadas"><i class="fas fa-check-circle"></i> Compras Completadas</h4>`);
         completadas.forEach(venta => {
           contenedor.insertAdjacentHTML("beforeend", generarHTMLVenta(venta, true));
         });
@@ -142,35 +500,55 @@
       const headingId = completado ? `headingCompletado${venta.id}` : `headingPendiente${venta.id}`;
       const estadoClase = completado ? "completado" : "pendiente";
       const estadoTexto = completado ? "Completado" : "Por entregar";
+      const iconoEstado = completado ? "fas fa-check-circle" : "fas fa-clock";
 
       const detallesHTML = venta.detalles.map(d => `
         <tr>
           <td><img src="${d.imagen_producto}" alt="${d.nombre_producto}" class="producto-img"></td>
-          <td>${d.nombre_producto}</td>
-          <td>$${d.precio_unitario}</td>
-          <td>${d.cantidad_producto}</td>
-          <td>$${d.subtotal_venta}</td>
+          <td><strong>${d.nombre_producto}</strong></td>
+          <td><span class="fw-bold text-primary">$${d.precio_unitario}</span></td>
+          <td><span class="badge bg-secondary">${d.cantidad_producto}</span></td>
+          <td><span class="fw-bold text-success">$${d.subtotal_venta}</span></td>
         </tr>`).join('');
 
       return `
-        <div class="accordion-item mb-3">
+        <div class="accordion-item fade-in-up">
           <h2 class="accordion-header" id="${headingId}">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
-              ID Venta: #${venta.id} - ${new Date(venta.fecha_compra).toLocaleString()} - Total: $${venta.total_venta}
+              <div class="w-100 d-flex justify-content-between align-items-center">
+                <div>
+                  <i class="fas fa-receipt me-2 text-primary"></i>
+                  <strong>ID Venta: #${venta.id}</strong>
+                </div>
+                <div class="text-end">
+                  <div class="mb-1"><i class="far fa-calendar-alt me-1"></i>${new Date(venta.fecha_compra).toLocaleString()}</div>
+                  <div><strong class="text-success">Total: $${venta.total_venta}</strong></div>
+                </div>
+              </div>
             </button>
           </h2>
           <div id="${collapseId}" class="accordion-collapse collapse" data-bs-parent="#historialCompras">
             <div class="accordion-body">
-              <p><strong>Entrega:</strong> ${venta.tipo_entrega.charAt(0).toUpperCase() + venta.tipo_entrega.slice(1)}</p>
-              ${venta.tipo_entrega === "despacho" && venta.direccion_despacho ? `<p><strong>Dirección:</strong> ${venta.direccion_despacho}</p>` : ''}
-              <p><strong>Estado:</strong> <span class="estado-entrega ${estadoClase}">${estadoTexto}</span></p>
+              <div class="entrega-info">
+                <p><i class="fas fa-truck me-2"></i><strong>Tipo de Entrega:</strong> ${venta.tipo_entrega.charAt(0).toUpperCase() + venta.tipo_entrega.slice(1)}</p>
+                ${venta.tipo_entrega === "despacho" && venta.direccion_despacho ? `<p><i class="fas fa-map-marker-alt me-2"></i><strong>Dirección:</strong> ${venta.direccion_despacho}</p>` : ''}
+                <p><i class="${iconoEstado} me-2"></i><strong>Estado:</strong> <span class="estado-entrega ${estadoClase}">${estadoTexto}</span></p>
+              </div>
 
-              <table class="table table-bordered align-middle mt-3">
-                <thead class="table-light">
-                  <tr><th>Imagen</th><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th></tr>
-                </thead>
-                <tbody>${detallesHTML}</tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                      <th><i class="fas fa-image me-1"></i>Imagen</th>
+                      <th><i class="fas fa-box me-1"></i>Producto</th>
+                      <th><i class="fas fa-dollar-sign me-1"></i>Precio</th>
+                      <th><i class="fas fa-sort-numeric-up me-1"></i>Cantidad</th>
+                      <th><i class="fas fa-calculator me-1"></i>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>${detallesHTML}</tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

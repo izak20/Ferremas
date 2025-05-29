@@ -5,50 +5,326 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>¿Quiénes Somos? - FERREMAS</title>
+
+  <!-- Bootstrap 5 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
   <style>
+    :root {
+      --primary-color: #6f42c1;
+      --secondary-color: #fd7e14;
+      --accent-color: #20c997;
+      --dark-color: #212529;
+      --light-color: #f8f9fa;
+    }
+
     body {
-      background-color: #f4f4f9;
-      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--light-color) 0%, #e9ecef 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    main { flex: 1; }
-
-    .info-box {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    main { 
+      flex: 1; 
+      padding-top: 120px;
+      padding-bottom: 80px;
     }
 
-    footer {
-      background-color: #2E7D32;
-      color: white;
+    /* Navbar Bootstrap personalizada */
+    .navbar {
+      background: linear-gradient(135deg, var(--primary-color), #5a32a3) !important;
+      box-shadow: 0 4px 20px rgba(111, 66, 193, 0.3);
+      padding: 1rem 0;
+    }
+
+    .navbar-brand img {
+      transition: all 0.3s ease;
+      filter: brightness(1.1);
+    }
+
+    .navbar-brand:hover img {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .navbar-nav .nav-link {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-weight: 500;
+      margin: 0 0.5rem;
+      border-radius: 20px;
+      padding: 0.5rem 1rem !important;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white !important;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-light {
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-light:hover {
+      background: var(--secondary-color);
+      border-color: var(--secondary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(253, 126, 20, 0.4);
+    }
+
+    /* Título principal */
+    .main-title {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: var(--primary-color);
       text-align: center;
-      padding: 20px 0;
+      margin-bottom: 3rem;
+      position: relative;
+      display: inline-block;
+      width: 100%;
     }
 
-    .title {
-      color: #2E7D32;
-      font-weight: bold;
+    .main-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+      border-radius: 2px;
     }
 
-    .empresa-info p {
-      margin-bottom: 5px;
+    /* Card principal modernizada */
+    .info-box {
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      background: white;
+      padding: 3rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .info-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+    }
+
+    .info-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .info-box p {
+      font-size: 1.2rem;
+      color: #6c757d;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      text-align: justify;
+    }
+
+    .info-box strong {
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+
+    /* Sección de datos de la empresa */
+    .empresa-section {
+      background: linear-gradient(135deg, rgba(111, 66, 193, 0.05), rgba(32, 201, 151, 0.05));
+      border-radius: 25px;
+      padding: 2.5rem;
+      margin-top: 2rem;
+      border: 2px solid rgba(111, 66, 193, 0.1);
+    }
+
+    .empresa-section h5 {
+      color: var(--primary-color);
+      font-weight: 800;
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .empresa-section h5::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+      border-radius: 2px;
+    }
+
+    .empresa-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .empresa-info .info-item {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .empresa-info .info-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .empresa-info .info-item i {
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+      margin-right: 1rem;
+      width: 25px;
+    }
+
+    .empresa-info .info-item p {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--dark-color);
+      font-weight: 600;
+    }
+
+    .empresa-info .info-item .label {
+      color: #6c757d;
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Separador elegante */
+    .elegant-divider {
+      border: none;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+      margin: 3rem 0;
+      opacity: 0.6;
+    }
+
+    /* Footer modernizado */
+    footer {
+      background: linear-gradient(135deg, var(--dark-color), #343a40);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+
+    /* Animaciones */
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .fade-in-left {
+      animation: fadeInLeft 0.8s ease forwards;
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+
+    .fade-in-right {
+      animation: fadeInRight 0.8s ease forwards;
+      opacity: 0;
+      transform: translateX(30px);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInLeft {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .info-box {
+        padding: 2rem;
+      }
+      
+      .empresa-section {
+        padding: 2rem;
+      }
+      
+      .main-title {
+        font-size: 2rem;
+      }
+      
+      .empresa-info {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .navbar-nav {
+        text-align: center;
+      }
+      
+      main {
+        padding-top: 100px;
+        padding-bottom: 60px;
+      }
+      
+      .info-box {
+        padding: 1.5rem;
+      }
+      
+      .empresa-section {
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2E7D32;">
+<!-- Navbar Bootstrap -->
+<nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <img src="{% static 'img/logo.png' %}" alt="logo" style="height: 70px; border-radius: 15px 0 15px 0;">
+      <img src="https://i.ibb.co/pBhm08Vn/logo.png" alt="logo" style="height: 70px; border-radius: 15px 0 15px 0;">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
       <span class="navbar-toggler-icon"></span>
@@ -61,9 +337,31 @@
         <li class="nav-item"><a class="nav-link" href="{% url 'vista_ofertas' %}">Ofertas</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}">Contacto</a></li>
 
+
+        {% if user.is_authenticated %}
+          <li class="nav-item ms-2">
+            <a class="nav-link" href="{% url 'vista_carrito' %}">
+              <i class="fas fa-shopping-cart"></i> Carrito
+            </a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="nav-link" href="{% url 'mi_historial_compras' %}">
+              <i class="fas fa-history"></i> Mis Compras
+            </a>
+          </li>
+        {% endif %}
+
+        {% if user.is_staff %}
+          <li class="nav-item ms-2">
+            <a class="nav-link" href="{% url 'panel_administracion' %}">
+              <i class="fas fa-cog me-1"></i> Panel Admin
+            </a>
+          </li>
+        {% endif %}
+        
         {% if user.is_authenticated %}
           <li class="nav-item ms-3">
-            <span class="text-white me-3">Hola, {{ user.username }}</span>
+            <span class="text-white me-3 fw-bold">Hola, {{ user.username }}</span>
           </li>
           <li class="nav-item ms-2">
             <a class="btn btn-outline-light px-3 py-2" href="/usuarios/cerrar-sesion/">
@@ -78,55 +376,81 @@
           </li>
         {% endif %}
 
-        {% if user.is_staff %}
-          <li class="nav-item ms-2">
-            <a class="nav-link" href="{% url 'panel_administracion' %}">Panel de Administración</a>
-          </li>
-        {% endif %}
-
-        {% if user.is_authenticated %}
-          <li class="nav-item ms-2">
-            <a class="nav-link" href="{% url 'vista_carrito' %}">
-              <i class="fas fa-shopping-cart"></i> Carrito
-            </a>
-          </li>
-          <li class="nav-item ms-2">
-            <a class="nav-link" href="{% url 'mi_historial_compras' %}">
-              <i class="fas fa-history"></i> Mis Compras
-            </a>
-          </li>
-        {% endif %}
       </ul>
     </div>
   </div>
 </nav>
 
-<main class="container my-5">
-  <h2 class="text-center mb-4 title">¿Quiénes Somos?</h2>
+<main class="container">
+  <h1 class="main-title fade-in-up">¿Quiénes Somos?</h1>
+  
   <div class="row justify-content-center">
     <div class="col-lg-10">
-      <div class="info-box">
+      <div class="info-box fade-in-left">
         <p>
-          <strong>FERREMAS</strong> es una empresa chilena dedicada a la venta de productos de ferretería,
-          construcción, electricidad, gasfitería y mucho más. Nos enfocamos en brindar soluciones reales a
-          nuestros clientes, tanto en el ámbito profesional como en el hogar.
+          <strong>FERREMAS</strong> es una empresa chilena líder en la distribución de productos de ferretería,
+          construcción, electricidad, gasfitería y herramientas especializadas. Desde nuestros inicios, nos hemos
+          enfocado en brindar soluciones integrales y de calidad tanto para profesionales de la construcción
+          como para proyectos del hogar.
         </p>
         <p>
-          Con años de experiencia y compromiso, en FERREMAS creemos en ofrecer productos de calidad,
-          atención personalizada y precios competitivos. Estamos aquí para acompañarte en tus proyectos
-          y entregarte las herramientas necesarias para concretarlos.
+          Con más de una década de experiencia en el mercado nacional, en FERREMAS hemos construido una sólida
+          reputación basada en la confianza, la calidad de nuestros productos y la excelencia en el servicio
+          al cliente. Trabajamos con las mejores marcas del mercado para garantizar que nuestros clientes
+          reciban productos duraderos y confiables.
+        </p>
+        <p>
+          Nuestro compromiso va más allá de la venta: somos sus socios estratégicos en cada proyecto,
+          ofreciendo asesoría técnica especializada, entrega oportuna y el respaldo post-venta que
+          su proyecto merece. En FERREMAS, convertimos sus ideas en realidad.
         </p>
 
-        <hr class="my-4" />
+        <hr class="elegant-divider" />
 
-        <h5 class="mb-3">Datos de la Empresa</h5>
-        <div class="empresa-info">
-          <p><strong>FERREMAS</strong></p>
-          <p>RUT: 76.123.456-7</p>
-          <p>Av. Principal 123, Santiago, Chile</p>
-          <p>Email: contacto@ferremas.cl</p>
-          <p>Teléfono: +56 9 1234 5678</p>
-          <p>Horario: Lunes a Viernes, 9:00 a 18:00 hrs</p>
+        <div class="empresa-section fade-in-right">
+          <h5><i class="fas fa-building me-3"></i>Información Corporativa</h5>
+          
+          <div class="empresa-info">
+            <div class="info-item">
+              <div class="label">Razón Social</div>
+              <p><i class="fas fa-industry"></i>FERREMAS SpA</p>
+            </div>
+            
+            <div class="info-item">
+              <div class="label">RUT</div>
+              <p><i class="fas fa-id-card"></i>76.123.456-7</p>
+            </div>
+            
+            <div class="info-item">
+              <div class="label">Dirección Corporativa</div>
+              <p><i class="fas fa-map-marker-alt"></i>G-515-H 571, Paine, Región Metropolitana</p>
+            </div>
+            
+            <div class="info-item">
+              <div class="label">Email Corporativo</div>
+              <p><i class="fas fa-envelope"></i>contacto@ferremas.cl</p>
+            </div>
+            
+            <div class="info-item">
+              <div class="label">Teléfono Principal</div>
+              <p><i class="fas fa-phone"></i>+56 (2) 2517 7628</p>
+            </div>
+            
+            <div class="info-item">
+              <div class="label">WhatsApp Comercial</div>
+              <p><i class="fab fa-whatsapp"></i>+56 9 9761 3852</p>
+            </div>
+            
+            <div class="info-item">
+              <div class="label">Horario de Atención</div>
+              <p><i class="fas fa-clock"></i>Lunes a Viernes: 8:00 - 19:00 hrs</p>
+            </div>
+            
+            <div class="info-item">
+              <div class="label">Horario Sábados</div>
+              <p><i class="fas fa-calendar-alt"></i>Sábados: 9:00 - 14:00 hrs</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -135,10 +459,53 @@
 
 <footer>
   <div class="container">
-    <p class="mb-0">© 2025 FERREMAS - Todos los derechos reservados</p>
+    <div class="row">
+      <div class="col-12">
+        <p class="mb-0">© 2025 FERREMAS - Todos los derechos reservados</p>
+        <div class="mt-3">
+          <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
   </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Navbar scroll effect
+  window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+      navbar.style.background = 'linear-gradient(135deg, rgba(111, 66, 193, 0.95), rgba(90, 50, 163, 0.95))';
+      navbar.style.backdropFilter = 'blur(10px)';
+    } else {
+      navbar.style.background = 'linear-gradient(135deg, var(--primary-color), #5a32a3)';
+      navbar.style.backdropFilter = 'none';
+    }
+  });
+
+  // Intersection Observer para animaciones
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, observerOptions);
+
+  // Observar elementos con animación
+  document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right').forEach(element => {
+    element.style.animationPlayState = 'paused';
+    observer.observe(element);
+  });
+</script>
+
 </body>
 </html>

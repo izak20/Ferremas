@@ -4,75 +4,458 @@
   <meta charset="UTF-8">
   <title>FERREMAS - Resultado del Pago</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      background-color: #f2f2f2;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 1rem;
     }
-    .card {
-      background-color: #ffffff;
-      padding: 2rem 2.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-      max-width: 480px;
+
+    /* Animated background particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: float 8s infinite linear;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main card */
+    .result-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      max-width: 500px;
       width: 100%;
       text-align: center;
-      border: 2px solid #ffa500;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      animation: slideInUp 0.8s ease-out;
+      color: white;
     }
-    .card h2 {
-      color: #e67e00;
-      margin-bottom: 1rem;
+
+    @keyframes slideInUp {
+      from { transform: translateY(30px) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
     }
-    .icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-    }
-    .success {
-      color: #28a745;
-    }
-    .fail {
-      color: #dc3545;
-    }
-    .btn-ferremas {
-      background-color: #ffa500;
-      border: none;
-      color: #000;
-      font-weight: bold;
-    }
-    .btn-ferremas:hover {
-      background-color: #e69500;
-    }
+
+    /* Logo styling */
     .logo {
       width: 120px;
+      height: auto;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      margin-bottom: 2rem;
+      animation: bounceIn 1s ease-out 0.3s both;
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.05); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Status icons */
+    .status-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      animation: statusPulse 2s ease-in-out infinite;
+    }
+
+    .success-icon {
+      color: #10b981;
+      text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+    }
+
+    .fail-icon {
+      color: #ef4444;
+      text-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+    }
+
+    @keyframes statusPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Title styling */
+    .result-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      line-height: 1.3;
+    }
+
+    .success-title {
+      background: linear-gradient(135deg, #10b981, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .fail-title {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Info cards */
+    .info-section {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: slideInUp 0.8s ease-out 0.5s both;
+    }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .info-item:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-value {
+      font-weight: 700;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .total-value {
+      color: #10b981;
+      font-size: 1.3rem;
+      text-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Modern buttons */
+    .btn-modern {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 50px;
+      padding: 15px 30px;
+      font-weight: 600;
+      color: white;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+      margin-top: 1rem;
+      min-width: 200px;
+      justify-content: center;
+      animation: slideInUp 0.8s ease-out 0.7s both;
+    }
+
+    .btn-modern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-modern:hover::before {
+      left: 100%;
+    }
+
+    .btn-modern:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn-success-modern {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success-modern:hover {
+      box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
+      color: white;
+    }
+
+    .btn-warning-modern {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-warning-modern:hover {
+      box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
+      color: white;
+    }
+
+    /* Success/Fail specific styling */
+    .success-border {
+      border-color: rgba(16, 185, 129, 0.3);
+      box-shadow: 0 25px 50px rgba(16, 185, 129, 0.1);
+    }
+
+    .fail-border {
+      border-color: rgba(239, 68, 68, 0.3);
+      box-shadow: 0 25px 50px rgba(239, 68, 68, 0.1);
+    }
+
+    /* Loading animation for demonstration */
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .result-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+      }
+      
+      .result-title {
+        font-size: 1.5rem;
+      }
+      
+      .status-icon {
+        font-size: 3rem;
+      }
+      
+      .info-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+      
+      .btn-modern {
+        width: 100%;
+        padding: 15px 20px;
+      }
+    }
+
+    /* Celebration animation for success */
+    .celebration {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      animation: confetti-fall 3s ease-out infinite;
+    }
+
+    @keyframes confetti-fall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(200px) rotate(720deg); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <img src="/static/img/logo.png" alt="FERREMAS" class="logo">
 
+  <!-- Animated particles -->
+  <div class="particles" id="particles"></div>
+
+  <div class="result-card {% if 'éxito' in mensaje %}success-border{% else %}fail-border{% endif %}">
+    
+    <!-- Logo -->
+            <img src="https://i.ibb.co/pBhm08Vn/logo.png" alt="FERREMAS" class="admin-logo shine-effect">
+    
+    <!-- Status Icon -->
     {% if "éxito" in mensaje %}
-      <div class="icon success">✔️</div>
+      <div class="status-icon success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
     {% else %}
-      <div class="icon fail">❌</div>
+      <div class="status-icon fail-icon">
+        <i class="fas fa-times-circle"></i>
+      </div>
     {% endif %}
-
-    <h2>{{ mensaje }}</h2>
-
-    <p><strong>ID de Venta:</strong> {{ venta.id }}</p>
-    <p><strong>Total pagado:</strong> ${{ venta.total_venta }}</p>
-
+    
+    <!-- Title -->
+    <h2 class="result-title {% if 'éxito' in mensaje %}success-title{% else %}fail-title{% endif %}">
+      {{ mensaje }}
+    </h2>
+    
+    <!-- Transaction info -->
+    <div class="info-section">
+      <div class="info-item">
+        <div class="info-label">
+          <i class="fas fa-hashtag"></i>
+          ID de Venta:
+        </div>
+        <div class="info-value">{{ venta.id }}</div>
+      </div>
+      
+      <div class="info-item">
+        <div class="info-label">
+          <i class="fas fa-dollar-sign"></i>
+          Total Pagado:
+        </div>
+        <div class="info-value total-value">${{ venta.total_venta }}</div>
+      </div>
+      
+      {% if "éxito" in mensaje %}
+      <div class="info-item">
+        <div class="info-label">
+          <i class="fas fa-calendar-check"></i>
+          Estado:
+        </div>
+        <div class="info-value" style="color: #10b981;">
+          <i class="fas fa-check me-1"></i>
+          Completado
+        </div>
+      </div>
+      {% else %}
+      <div class="info-item">
+        <div class="info-label">
+          <i class="fas fa-exclamation-triangle"></i>
+          Estado:
+        </div>
+        <div class="info-value" style="color: #ef4444;">
+          <i class="fas fa-times me-1"></i>
+          Fallido
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    
+    <!-- Action Button -->
     {% if "éxito" in mensaje %}
-      <a href="/" class="btn btn-ferremas btn-lg mt-4">Volver al inicio</a>
+      <a href="/" class="btn-modern btn-success-modern">
+        <i class="fas fa-home"></i>
+        Volver al Inicio
+      </a>
     {% else %}
-      <a href="/carrito/" class="btn btn-ferremas btn-lg mt-4">Volver al carrito</a>
+      <a href="/carrito/" class="btn-modern btn-warning-modern">
+        <i class="fas fa-shopping-cart"></i>
+        Volver al Carrito
+      </a>
     {% endif %}
+    
+    <!-- Celebration effect for success -->
+    {% if "éxito" in mensaje %}
+    <div class="celebration" id="celebration"></div>
+    {% endif %}
+    
   </div>
+
+<script>
+  // Create animated particles
+  function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 50;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 8 + 's';
+      particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+      particlesContainer.appendChild(particle);
+    }
+  }
+
+  // Create confetti for success
+  function createConfetti() {
+    const celebration = document.getElementById('celebration');
+    if (!celebration) return;
+    
+    const colors = ['#10b981', '#059669', '#34d399', '#6ee7b7', '#a7f3d0'];
+    
+    for (let i = 0; i < 20; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 200 - 100 + 'px';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDelay = Math.random() * 2 + 's';
+      confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      celebration.appendChild(confetti);
+    }
+  }
+
+  // Initialize effects
+  createParticles();
+  createConfetti();
+
+  // Auto-redirect after success (optional)
+  {% if "éxito" in mensaje %}
+  // Uncomment the next line if you want auto-redirect after 5 seconds
+  // setTimeout(() => window.location.href = '/', 5000);
+  {% endif %}
+</script>
+
 </body>
 </html>

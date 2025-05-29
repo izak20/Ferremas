@@ -6,78 +6,344 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
     <style>
+        :root {
+            --primary-color: #6f42c1;
+            --secondary-color: #fd7e14;
+            --accent-color: #20c997;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+
         body {
-            background-image: url("{% static 'img/fondo.jpg' %}");
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
+            background: linear-gradient(135deg, var(--light-color) 0%, #e9ecef 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
-        .navbar-custom {
-            background-color: #2E7D32;
+
+        /* Logo superior */
+        .logo-container {
+            position: absolute;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
         }
-        .login-container {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            max-width: 400px;
-            margin: auto;
+
+        .logo-container img {
+            height: 80px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
         }
-        footer {
-            background-color: #2E7D32;
+
+        .logo-container img:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Botón volver al inicio */
+        .btn-home {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(45deg, var(--primary-color), #5a32a3);
             color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(111, 66, 193, 0.3);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .btn-home:hover {
+            background: linear-gradient(45deg, #5a32a3, var(--primary-color));
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(111, 66, 193, 0.4);
+        }
+
+        /* Contenedor principal modernizado */
+        .login-container {
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            padding: 3rem;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+            margin-top: 4rem;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Título */
+        .login-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
             text-align: center;
-            padding: 15px 0;
-            margin-top: auto;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
             width: 100%;
+        }
+
+        .login-title::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        /* Campos de formulario modernizados */
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            padding: 0.75rem 1.25rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: rgba(248, 249, 250, 0.5);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(32, 201, 151, 0.25);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .form-control::placeholder {
+            color: #adb5bd;
+            font-weight: 500;
+        }
+
+        /* Botón principal modernizado */
+        .btn-login {
+            background: linear-gradient(45deg, var(--secondary-color), #e8590c);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            width: 100%;
+            box-shadow: 0 8px 25px rgba(253, 126, 20, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(45deg, #e8590c, #dc5502);
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(253, 126, 20, 0.5);
+        }
+
+        /* Enlaces modernizados */
+        .login-links {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .login-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .login-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .login-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .login-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Alertas modernizadas */
+        .alert {
+            border: none;
+            border-radius: 15px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .alert-success {
+            background: linear-gradient(45deg, rgba(32, 201, 151, 0.1), rgba(32, 201, 151, 0.05));
+            color: var(--accent-color);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .alert-danger {
+            background: linear-gradient(45deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+            color: #dc3545;
+            border-left: 4px solid #dc3545;
+        }
+
+        /* Animaciones */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 2rem;
+                margin-top: 2rem;
+            }
+            
+            .login-title {
+                font-size: 2rem;
+            }
+            
+            .btn-home {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .logo-container {
+                top: 1rem;
+            }
+            
+            .logo-container img {
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-container {
+                width: 95%;
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-custom text-white text-center py-3 shadow">
-    <div class="container d-flex justify-content-center">
-        <a href="/">
-            <img src="{% static 'img/logo.png' %}" alt="logo" class="rounded" style="height: 70px;">
-        </a>
-    </div>
-</nav>
+<!-- Botón volver al inicio -->
+<a href="/" class="btn-home">
+    <i class="fas fa-home me-2"></i>Volver al Inicio
+</a>
 
-<main class="container my-5 flex-grow-1 d-flex justify-content-center align-items-center">
-    <div class="login-container">
-        <h2 class="text-center mb-4">Iniciar Sesión</h2>
+<!-- Logo superior -->
+<div class="logo-container">
+    <a href="/">
+            <img src="https://i.ibb.co/pBhm08Vn/logo.png" alt="FERREMAS" class="admin-logo shine-effect">
+    </a>
+</div>
+
+<main class="d-flex justify-content-center align-items-center flex-grow-1">
+    <div class="login-container fade-in-up">
+        <h2 class="login-title">
+            <i class="fas fa-user-circle me-3"></i>Iniciar Sesión
+        </h2>
+        
         <form id="form-login">
             {% csrf_token %}
             <div class="mb-3">
-                <input type="text" class="form-control" name="username" placeholder="Nombre de usuario" required>
+                <input type="text" class="form-control" name="username" placeholder="👤 Nombre de usuario" required>
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control" name="password" placeholder="Contraseña" required>
+                <input type="password" class="form-control" name="password" placeholder="🔒 Contraseña" required>
             </div>
             <div class="d-grid">
-                <button type="submit" class="btn btn-success w-100">Ingresar</button>
+                <button type="submit" class="btn btn-login">
+                    <i class="fas fa-sign-in-alt me-2"></i>Ingresar
+                </button>
             </div>
         </form>
-        <div id="mensaje" class="mt-3"></div>
-        <div class="text-center mt-3">
-            ¿No tienes cuenta? <a href="/usuarios/registro/">Regístrate</a>
-        </div>
-        <div class="text-center mt-2">
-            <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+        
+        <div id="mensaje"></div>
+        
+        <div class="login-links">
+            <div class="mb-2">
+                ¿No tienes cuenta? 
+                <a href="/usuarios/registro/">
+                    <i class="fas fa-user-plus me-1"></i>Regístrate
+                </a>
+            </div>
+            <div>
+                <a href="{% url 'password_reset' %}">
+                    <i class="fas fa-key me-1"></i>¿Olvidaste tu contraseña?
+                </a>
+            </div>
         </div>
     </div>
 </main>
 
-<footer>
-    <p class="mb-0">© 2025 FERREMAS - Todos los derechos reservados</p>
-</footer>
-
 <script>
+// Intersection Observer para animaciones
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+        }
+    });
+}, observerOptions);
+
+// Observar elementos con animación
+document.querySelectorAll('.fade-in-up').forEach(element => {
+    element.style.animationPlayState = 'paused';
+    observer.observe(element);
+});
+
 document.getElementById("form-login").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -101,18 +367,18 @@ document.getElementById("form-login").addEventListener("submit", function (e) {
         const mensaje = document.getElementById("mensaje");
 
         if (result.status === 200) {
-            mensaje.innerHTML = '<div class="alert alert-success">Inicio de sesión exitoso. Redirigiendo...</div>';
+            mensaje.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>Inicio de sesión exitoso. Redirigiendo...</div>';
             setTimeout(() => {
                 window.location.href = result.data.redirect_url || "/";
             }, 1500);
         } else {
-            mensaje.innerHTML = `<div class="alert alert-danger">Error: ${result.data.message || 'Credenciales incorrectas'}</div>`;
+            mensaje.innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>Error: ${result.data.message || 'Credenciales incorrectas'}</div>`;
         }
     })
     .catch(error => {
         console.error(error);
         document.getElementById("mensaje").innerHTML = 
-            `<div class="alert alert-danger">Error inesperado.</div>`;
+            `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error inesperado.</div>`;
     });
 });
 </script>
