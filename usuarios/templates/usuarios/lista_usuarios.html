@@ -5,160 +5,514 @@
   <meta charset="UTF-8" />
   <title>Usuarios - FERREMAS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
- body {
-      background: url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Yle55W6QKWSoQbE4/herramientas-manuales-basicas-02-2022-07-AE0vvPgGKDiqlZEX.jpg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Arial', sans-serif;
+    * {
       margin: 0;
-      color: black;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .container {
-      background-color: #388E3C;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 30px;
-      margin-top: 50px;
-      color: black;
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    .usuarios-card {
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    /* Animated background particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .btn-volver {
-      background: linear-gradient(to bottom, #2E7D32, #81C784);
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: float 8s infinite linear;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main container */
+    .main-container {
+      position: relative;
+      z-index: 2;
+      padding: 2rem 1rem;
+    }
+
+    /* Glassmorphism cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+      animation: slideInUp 0.8s ease-out;
+    }
+
+    @keyframes slideInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Modern title */
+    .modern-title {
+      background: linear-gradient(135deg, #fff, #f8f9fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Section headers */
+    .section-header {
       color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-header i {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.8rem;
+    }
+
+    /* Modern buttons */
+    .btn-modern {
+      background: linear-gradient(135deg, #667eea, #764ba2);
       border: none;
       border-radius: 50px;
-      padding: 10px 30px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s, transform 0.3s;
+      padding: 12px 24px;
+      font-weight: 600;
+      color: white;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
     }
 
-    .btn-volver:hover {
-      background: linear-gradient(to bottom, #45a049, #66bb6a);
-      transform: scale(1.05);
+    .btn-modern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
     }
 
-    .table th, .table td {
+    .btn-modern:hover::before {
+      left: 100%;
+    }
+
+    .btn-modern:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+      color: white;
+    }
+
+    .btn-success-modern {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success-modern:hover {
+      box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4);
+      color: white;
+    }
+
+    .btn-danger-modern {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger-modern:hover {
+      box-shadow: 0 12px 35px rgba(239, 68, 68, 0.4);
+      color: white;
+    }
+
+    .btn-secondary-modern {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary-modern:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      color: white;
+    }
+
+    /* Filter section */
+    .filters-section {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-control, .form-select {
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+      transform: translateY(-1px);
+    }
+
+    /* Modern table */
+    .modern-table {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .modern-table table {
+      margin: 0;
+    }
+
+    .modern-table thead {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .modern-table th {
+      padding: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.9rem;
+      border: none;
+    }
+
+    .modern-table td {
+      padding: 1rem;
+      border: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       vertical-align: middle;
-      color: black;
     }
 
-    .table tbody tr {
-      background-color: rgba(255, 255, 255, 0.9);
+    .modern-table tbody tr {
+      transition: all 0.3s ease;
     }
 
-    .filtros input,
-    .filtros select {
-      max-width: 250px;
-      margin-right: 10px;
+    .modern-table tbody tr:hover {
+      background: rgba(102, 126, 234, 0.05);
+      transform: scale(1.01);
     }
 
-    .alert,
-    .usuarios-card .alert {
-      margin-top: 20px;
+    /* Status badges */
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-admin {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+    }
+
+    .status-user {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+    }
+
+    /* Alert styling */
+    .modern-alert {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      color: white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .modern-alert-warning {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    /* Loading animation */
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 1rem 0.5rem;
+      }
+      
+      .glass-card {
+        padding: 1.5rem;
+      }
+      
+      .modern-title {
+        font-size: 2rem;
+      }
+      
+      .modern-table {
+        font-size: 0.9rem;
+      }
+      
+      .modern-table th,
+      .modern-table td {
+        padding: 0.75rem 0.5rem;
+      }
+    }
+
+    /* Action buttons in table */
+    .table-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-sm-modern {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 20px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    /* Notification animation */
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .notification-enter {
+      animation: slideInRight 0.5s ease-out;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h2 class="mb-4 text-center">Panel de Usuarios</h2>
+  <!-- Animated particles -->
+  <div class="particles" id="particles"></div>
 
-  <!-- Botón Volver -->
-  <div class="text-center mb-4">
-    <a href="{% url 'panel_administracion' %}" class="btn btn-volver">
-      <i class="fas fa-arrow-left me-2"></i> Volver al Panel de Administración
-    </a>
-  </div>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+  <div class="main-container">
+    <div class="container-fluid">
+      
+      <!-- Header -->
+      <div class="glass-card">
+        <h1 class="modern-title">
+          <i class="fas fa-users"></i>
+          Panel de Usuarios
+        </h1>
+        
+        <!-- Back button -->
+        <div class="text-center mb-4">
+          <a href="{% url 'panel_administracion' %}" class="btn btn-modern btn-secondary-modern">
+            <i class="fas fa-arrow-left me-2"></i>
+            Volver al Panel de Administración
+          </a>
+        </div>
       </div>
-    {% endfor %}
-  {% endif %}
 
-  <div id="alerta-error" class="alert alert-danger d-none" role="alert"></div>
+      <!-- Messages -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="modern-alert modern-alert-warning notification-enter" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
 
-  <div class="usuarios-card">
-    <div class="d-flex justify-content-between flex-wrap align-items-center mb-3">
-      <div class="d-flex flex-wrap filtros mb-2">
-        <input type="text" id="filtro-nombre" class="form-control mb-2" placeholder="Buscar por nombre">
-        <input type="text" id="filtro-rut" class="form-control mb-2" placeholder="Buscar por RUT">
-        <select id="filtro-rol" class="form-select mb-2">
-          <option value="">Todos</option>
-          <option value="admin">Administradores</option>
-          <option value="usuario">Usuarios</option>
-        </select>
+      <div id="alerta-error" class="modern-alert d-none" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span id="alerta-mensaje"></span>
       </div>
-      <a href="{% url 'vista_agregar_usuario' %}" class="btn btn-success mb-2">Agregar Usuario</a>
+
+      <!-- Filters and Add Button -->
+      <div class="glass-card">
+        <div class="filters-section">
+          <div class="row align-items-end">
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-white fw-bold">
+                <i class="fas fa-search me-1"></i>
+                Buscar por nombre
+              </label>
+              <input type="text" id="filtro-nombre" class="form-control" placeholder="Escribir nombre...">
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-white fw-bold">
+                <i class="fas fa-id-card me-1"></i>
+                Buscar por RUT
+              </label>
+              <input type="text" id="filtro-rut" class="form-control" placeholder="Escribir RUT...">
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-white fw-bold">
+                <i class="fas fa-filter me-1"></i>
+                Filtrar por rol
+              </label>
+              <select id="filtro-rol" class="form-select">
+                <option value="">Todos los roles</option>
+                <option value="admin">Administradores</option>
+                <option value="usuario">Usuarios</option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <a href="{% url 'vista_agregar_usuario' %}" class="btn btn-modern btn-success-modern w-100">
+                <i class="fas fa-user-plus me-2"></i>
+                Agregar Usuario
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+      <input type="hidden" id="usuario-actual-id" value="{{ request.user.id }}">
+
+      <!-- Active Users -->
+      <div class="glass-card">
+        <h3 class="section-header">
+          <i class="fas fa-user-check"></i>
+          Usuarios Activos
+        </h3>
+        <div class="modern-table">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th><i class="fas fa-id-badge me-1"></i>RUT</th>
+                <th><i class="fas fa-user me-1"></i>Nombre</th>
+                <th><i class="fas fa-at me-1"></i>Usuario</th>
+                <th><i class="fas fa-envelope me-1"></i>Email</th>
+                <th><i class="fas fa-phone me-1"></i>Teléfono</th>
+                <th><i class="fas fa-crown me-1"></i>Rol</th>
+                <th><i class="fas fa-cogs me-1"></i>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-activos"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Banned Users -->
+      <div class="glass-card">
+        <h3 class="section-header">
+          <i class="fas fa-user-slash"></i>
+          Usuarios Baneados
+        </h3>
+        <div class="modern-table">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th><i class="fas fa-id-badge me-1"></i>RUT</th>
+                <th><i class="fas fa-user me-1"></i>Nombre</th>
+                <th><i class="fas fa-at me-1"></i>Usuario</th>
+                <th><i class="fas fa-envelope me-1"></i>Email</th>
+                <th><i class="fas fa-phone me-1"></i>Teléfono</th>
+                <th><i class="fas fa-crown me-1"></i>Rol</th>
+                <th><i class="fas fa-cogs me-1"></i>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-baneados"></tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-  <input type="hidden" id="usuario-actual-id" value="{{ request.user.id }}">
-
-  <!-- Usuarios activos -->
-  <div class="usuarios-card">
-    <h4>👤 Usuarios Activos</h4>
-    <table class="table table-bordered table-hover">
-      <thead class="table-success text-center">
-        <tr>
-          <th>RUT</th>
-          <th>Nombre</th>
-          <th>Usuario</th>
-          <th>Email</th>
-          <th>Teléfono</th>
-          <th>Rol</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody id="tabla-activos" class="text-center"></tbody>
-    </table>
-  </div>
-
-  <!-- Usuarios baneados -->
-  <div class="usuarios-card">
-    <h4>🚫 Usuarios Baneados</h4>
-    <table class="table table-bordered table-hover">
-      <thead class="table-danger text-center">
-        <tr>
-          <th>RUT</th>
-          <th>Nombre</th>
-          <th>Usuario</th>
-          <th>Email</th>
-          <th>Teléfono</th>
-          <th>Rol</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody id="tabla-baneados" class="text-center"></tbody>
-    </table>
-  </div>
-</div>
-
 <script>
+  // Create animated particles
+  function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 60;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 8 + 's';
+      particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+      particlesContainer.appendChild(particle);
+    }
+  }
+
+  // Initialize particles
+  createParticles();
+
   let usuarios = [];
 
   function mostrarAlerta(mensaje) {
     const alerta = document.getElementById("alerta-error");
-    alerta.textContent = mensaje;
+    const alertaMensaje = document.getElementById("alerta-mensaje");
+    alertaMensaje.textContent = mensaje;
     alerta.classList.remove("d-none");
+    alerta.classList.add("notification-enter");
+    
     setTimeout(() => {
       alerta.classList.add("d-none");
-    }, 3000);
+      alerta.classList.remove("notification-enter");
+    }, 4000);
   }
 
   function renderTablas() {
@@ -180,47 +534,100 @@
     tbodyActivos.innerHTML = "";
     tbodyBaneados.innerHTML = "";
 
-    activos.filter(coincide).forEach(u => {
-      const fila = document.createElement("tr");
-      fila.innerHTML = `
-        <td>${u.rut}</td>
-        <td>${u.first_name} ${u.last_name}</td>
-        <td>${u.username}</td>
-        <td>${u.email}</td>
-        <td>${u.telefono}</td>
-        <td>${u.is_staff ? 'Administrador' : 'Usuario'}</td>
-        <td>
-          ${u.id !== idActual ? ` 
-            <a href="/usuarios/editar/${u.id}/" class="btn btn-success btn-sm me-2">Editar</a>
-            <button class="btn btn-danger btn-sm btn-ban" data-id="${u.id}">Banear</button>
-          ` : `<span class="text-muted">Sesión actual</span>`}
-        </td>
-      `;
-      tbodyActivos.appendChild(fila);
-    });
+    const activosFiltrados = activos.filter(coincide);
+    const baneadosFiltrados = baneados.filter(coincide);
 
-    baneados.filter(coincide).forEach(u => {
-      const fila = document.createElement("tr");
-      fila.innerHTML = `
-        <td>${u.rut}</td>
-        <td>${u.first_name} ${u.last_name}</td>
-        <td>${u.username}</td>
-        <td>${u.email}</td>
-        <td>${u.telefono}</td>
-        <td>${u.is_staff ? 'Administrador' : 'Usuario'}</td>
-        <td>
-          ${u.id !== idActual ? `
-            <button class="btn btn-success btn-sm btn-ban" data-id="${u.id}">Reactivar</button>
-          ` : `<span class="text-muted">Sin acciones</span>`}
-        </td>
+    if (activosFiltrados.length === 0) {
+      tbodyActivos.innerHTML = `
+        <tr>
+          <td colspan="7" class="empty-state">
+            <i class="fas fa-user-friends"></i>
+            <div>No hay usuarios activos que coincidan con los filtros</div>
+          </td>
+        </tr>
       `;
-      tbodyBaneados.appendChild(fila);
-    });
+    } else {
+      activosFiltrados.forEach(u => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td><strong>${u.rut}</strong></td>
+          <td>${u.first_name} ${u.last_name}</td>
+          <td><code>${u.username}</code></td>
+          <td>${u.email}</td>
+          <td>${u.telefono || '<span class="text-muted">No especificado</span>'}</td>
+          <td>
+            <span class="status-badge ${u.is_staff ? 'status-admin' : 'status-user'}">
+              <i class="fas ${u.is_staff ? 'fa-crown' : 'fa-user'}"></i>
+              ${u.is_staff ? 'Administrador' : 'Usuario'}
+            </span>
+          </td>
+          <td>
+            <div class="table-actions">
+              ${u.id !== idActual ? `
+                <a href="/usuarios/editar/${u.id}/" class="btn btn-modern btn-success-modern btn-sm-modern">
+                  <i class="fas fa-edit"></i> Editar
+                </a>
+                <button class="btn btn-modern btn-danger-modern btn-sm-modern btn-ban" data-id="${u.id}">
+                  <i class="fas fa-ban"></i> Banear
+                </button>
+              ` : `<span class="badge bg-info"><i class="fas fa-user-circle"></i> Sesión actual</span>`}
+            </div>
+          </td>
+        `;
+        tbodyActivos.appendChild(fila);
+      });
+    }
 
+    if (baneadosFiltrados.length === 0) {
+      tbodyBaneados.innerHTML = `
+        <tr>
+          <td colspan="7" class="empty-state">
+            <i class="fas fa-user-slash"></i>
+            <div>No hay usuarios baneados que coincidan con los filtros</div>
+          </td>
+        </tr>
+      `;
+    } else {
+      baneadosFiltrados.forEach(u => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td><strong>${u.rut}</strong></td>
+          <td>${u.first_name} ${u.last_name}</td>
+          <td><code>${u.username}</code></td>
+          <td>${u.email}</td>
+          <td>${u.telefono || '<span class="text-muted">No especificado</span>'}</td>
+          <td>
+            <span class="status-badge ${u.is_staff ? 'status-admin' : 'status-user'}">
+              <i class="fas ${u.is_staff ? 'fa-crown' : 'fa-user'}"></i>
+              ${u.is_staff ? 'Administrador' : 'Usuario'}
+            </span>
+          </td>
+          <td>
+            <div class="table-actions">
+              ${u.id !== idActual ? `
+                <button class="btn btn-modern btn-success-modern btn-sm-modern btn-ban" data-id="${u.id}">
+                  <i class="fas fa-undo"></i> Reactivar
+                </button>
+              ` : `<span class="badge bg-secondary">Sin acciones</span>`}
+            </div>
+          </td>
+        `;
+        tbodyBaneados.appendChild(fila);
+      });
+    }
+
+    // Add event listeners for ban/unban buttons
     document.querySelectorAll(".btn-ban").forEach(btn => {
       btn.addEventListener("click", function (event) {
         event.preventDefault();
         const id = this.dataset.id;
+        const isCurrentlyActive = this.innerHTML.includes('Banear');
+        
+        // Show loading state
+        const originalContent = this.innerHTML;
+        this.innerHTML = '<div class="loading-spinner"></div>';
+        this.disabled = true;
+        
         fetch(`/api/usuarios/toggle-activo/${id}/`, {
           method: "PATCH",
           headers: {
@@ -232,8 +639,20 @@
           if (result.status === 403 && result.data.error) {
             mostrarAlerta(result.data.error);
           } else {
+            // Show success message
+            const action = isCurrentlyActive ? 'baneado' : 'reactivado';
+            mostrarAlerta(`Usuario ${action} correctamente`);
             cargarUsuarios();
           }
+        })
+        .catch(error => {
+          mostrarAlerta('Error al procesar la solicitud');
+          console.error('Error:', error);
+        })
+        .finally(() => {
+          // Reset button state
+          this.innerHTML = originalContent;
+          this.disabled = false;
         });
       });
     });
@@ -245,6 +664,10 @@
       .then(data => {
         usuarios = data;
         renderTablas();
+      })
+      .catch(error => {
+        mostrarAlerta('Error al cargar los usuarios');
+        console.error('Error:', error);
       });
   }
 
@@ -257,7 +680,6 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 </body>
 </html>

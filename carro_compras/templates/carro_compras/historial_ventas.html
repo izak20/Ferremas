@@ -5,193 +5,535 @@
   <meta charset="UTF-8" />
   <title>Historial de Ventas - FERREMAS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {
-      background-color: #ffffff;
-      font-family: 'Arial', sans-serif;
+    * {
       margin: 0;
-      color: black;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .container {
-      background-color: #388E3C;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 30px;
-      color: black;
-      margin-top: 50px;
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #fff;
     }
-    .venta-card {
-      background-color: rgba(255, 255, 255, 0.8);
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 20px;
-      margin-bottom: 30px;
-      color: black;
+
+    .glass-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      margin: 2rem auto;
+      max-width: 1400px;
+      padding: 2rem;
     }
-    .volver-btn {
-      margin-bottom: 30px;
+
+    .header-section {
+      text-align: center;
+      margin-bottom: 3rem;
     }
-    .btn-volver {
-      background: linear-gradient(to bottom, #2E7D32, #81C784);
+
+    .header-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, #e0e7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+
+    .back-button {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
       color: white;
       border: none;
       border-radius: 50px;
-      padding: 10px 30px;
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+      margin-bottom: 2rem;
+    }
+
+    .back-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(79, 70, 229, 0.4);
+      color: white;
+    }
+
+    .filters-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      color: white;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .filter-input:focus {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+      color: white;
+      outline: none;
+    }
+
+    .filter-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .venta-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .venta-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #4f46e5, #7c3aed, #ec4899);
+      border-radius: 20px 20px 0 0;
+    }
+
+    .venta-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .venta-header {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.02);
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+    }
+
+    .info-value {
       font-size: 1.1rem;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s, transform 0.3s;
+      font-weight: 600;
+      color: white;
     }
-    .btn-volver:hover {
-      background: linear-gradient(to bottom, #45a049, #66bb6a);
-      transform: scale(1.05);
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .table th, .table td {
-      vertical-align: middle;
-      color: black;
+
+    .status-success {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
     }
-    .table tbody tr {
-      background-color: rgba(255, 255, 255, 0.8);
+
+    .status-pending {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
     }
-    .filtros {
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 30px;
+
+    .status-failed {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+    }
+
+    .products-table {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+
+    .products-table table {
+      margin: 0;
+      color: white;
+    }
+
+    .products-table thead {
+      background: rgba(79, 70, 229, 0.3);
+    }
+
+    .products-table th {
+      padding: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      border: none;
+      color: white;
+    }
+
+    .products-table td {
+      padding: 1rem;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .products-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .view-receipt-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .view-receipt-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+      color: white;
+    }
+
+    .empty-message {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .floating-animation {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @media (max-width: 768px) {
+      .glass-container {
+        margin: 1rem;
+        padding: 1rem;
+      }
+      
+      .header-title {
+        font-size: 2rem;
+      }
+      
+      .venta-header {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .filters-card > .row > [class*="col-"] {
+        margin-bottom: 1rem;
+      }
+    }
+
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
     }
   </style>
 </head>
 <body>
-<div class="container my-5">
-  <h2 class="text-center mb-4">Historial de Compras</h2>
+  <div class="glass-container">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1 class="header-title floating-animation">📊 Historial de Ventas</h1>
+      <p class="header-subtitle">Gestiona y visualiza todas las transacciones de FERREMAS</p>
+    </div>
 
-  <!-- Botón Volver -->
-  <div class="text-center volver-btn">
-    <a href="{% url 'panel_administracion' %}" class="btn btn-volver">
-      <i class="fas fa-arrow-left me-2"></i> Volver al Panel de Administración
-    </a>
-  </div>
+    <!-- Back Button -->
+    <div class="text-center">
+      <a href="{% url 'panel_administracion' %}" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        Volver al Panel de Administración
+      </a>
+    </div>
 
-  <!-- Filtros -->
-  <div class="filtros text-center">
-    <div class="row justify-content-center mb-2">
-      <div class="col-md-3">
-        <input type="text" id="buscadorUsuario" class="form-control" placeholder="Buscar por nombre o apellido">
+    <!-- Filters Card -->
+    <div class="filters-card">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <input type="text" id="buscadorUsuario" class="form-control filter-input" placeholder="🔍 Buscar por nombre o apellido">
+        </div>
+        <div class="col-md-3">
+          <input type="text" id="buscadorRut" class="form-control filter-input" placeholder="🆔 Buscar por RUT">
+        </div>
+        <div class="col-md-3">
+          <input type="date" id="fechaDesde" class="form-control filter-input">
+        </div>
+        <div class="col-md-3">
+          <input type="date" id="fechaHasta" class="form-control filter-input">
+        </div>
       </div>
-      <div class="col-md-3">
-        <input type="text" id="buscadorRut" class="form-control" placeholder="Buscar por RUT">
-      </div>
-      <div class="col-md-3">
-        <input type="date" id="fechaDesde" class="form-control">
-      </div>
-      <div class="col-md-3">
-        <input type="date" id="fechaHasta" class="form-control">
-      </div>
+    </div>
+
+    <!-- Sales Container -->
+    <div id="ventasContainer"></div>
+
+    <!-- Empty Message -->
+    <div id="mensajeVacio" class="empty-message d-none">
+      <div class="empty-icon">📋</div>
+      <h3>No hay ventas registradas</h3>
+      <p>No se encontraron transacciones que coincidan con los filtros aplicados.</p>
     </div>
   </div>
 
-  <!-- Contenedor dinámico de ventas -->
-  <div id="ventasContainer"></div>
+  <script>
+    const apiUrl = "/api/historial-ventas/";
 
-  <div id="mensajeVacio" class="alert alert-info text-center d-none">No hay ventas registradas.</div>
-</div>
-
-<script>
-  const apiUrl = "/api/historial-ventas/";
-
-  async function cargarVentas() {
-    const response = await fetch(apiUrl);
-    const ventas = await response.json();
-    const contenedor = document.getElementById("ventasContainer");
-    contenedor.innerHTML = "";
-
-    if (ventas.length === 0) {
-      document.getElementById("mensajeVacio").classList.remove("d-none");
-      return;
+    function getStatusBadge(status) {
+      const statusMap = {
+        'completed': { class: 'status-success', icon: 'fa-check-circle', text: 'Completado' },
+        'pending': { class: 'status-pending', icon: 'fa-clock', text: 'Pendiente' },
+        'failed': { class: 'status-failed', icon: 'fa-times-circle', text: 'Fallido' }
+      };
+      
+      const statusInfo = statusMap[status] || statusMap['pending'];
+      return `<span class="status-badge ${statusInfo.class}">
+        <i class="fas ${statusInfo.icon}"></i>
+        ${statusInfo.text}
+      </span>`;
     }
 
-    document.getElementById("mensajeVacio").classList.add("d-none");
+    async function cargarVentas() {
+      try {
+        const response = await fetch(apiUrl);
+        const ventas = await response.json();
+        const contenedor = document.getElementById("ventasContainer");
+        contenedor.innerHTML = "";
 
-    ventas.forEach(venta => {
-      const ventaHTML = `
-        <div class="venta-card"
-             data-usuario="${venta.id_usuario.first_name} ${venta.id_usuario.last_name}"
-             data-rut="${venta.id_usuario.rut}"
-             data-fecha="${venta.fecha_compra.split('T')[0]}">
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <strong>Venta ID:</strong> ${venta.id}<br>
-              <strong>Fecha:</strong> ${new Date(venta.fecha_compra).toLocaleString()}
-            </div>
-            <div class="col-md-4">
-              <strong>Usuario:</strong> ${venta.id_usuario.first_name} ${venta.id_usuario.last_name} (${venta.id_usuario.rut})
-            </div>
-            <div class="col-md-4">
-              <strong>Total:</strong> $${venta.total_venta}
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6"><strong>Estado WebPay:</strong> ${venta.webpay_payment_status}</div>
-            <div class="col-md-6"><strong>ID Transacción:</strong> ${venta.webpay_transaction_id || '-'}</div>
-          </div>
+        if (ventas.length === 0) {
+          document.getElementById("mensajeVacio").classList.remove("d-none");
+          return;
+        }
 
-          <table class="table table-sm table-bordered">
-            <thead class="table-light">
-              <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${venta.detalles.map(detalle => `
-                <tr>
-                  <td>${detalle.nombre_producto}</td>
-                  <td>${detalle.cantidad_producto}</td>
-                  <td>$${detalle.subtotal_venta}</td>
-                </tr>`).join('')}
-            </tbody>
-          </table>
+        document.getElementById("mensajeVacio").classList.add("d-none");
 
-          <div class="text-end mt-2">
-            <a href="/boleta/${venta.id}/" class="btn btn-outline-success btn-sm">Ver Boleta</a>
-          </div>
-        </div>`;
-      contenedor.insertAdjacentHTML("beforeend", ventaHTML);
-    });
+        ventas.forEach((venta, index) => {
+          const ventaHTML = `
+            <div class="venta-card floating-animation"
+                 data-usuario="${venta.id_usuario.first_name} ${venta.id_usuario.last_name}"
+                 data-rut="${venta.id_usuario.rut}"
+                 data-fecha="${venta.fecha_compra.split('T')[0]}"
+                 style="animation-delay: ${index * 0.1}s">
+              
+              <div class="venta-header">
+                <div class="info-item">
+                  <div class="info-label">ID de Venta</div>
+                  <div class="info-value gradient-text">#${venta.id}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Fecha</div>
+                  <div class="info-value">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    ${new Date(venta.fecha_compra).toLocaleString()}
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Cliente</div>
+                  <div class="info-value">
+                    <i class="fas fa-user me-2"></i>
+                    ${venta.id_usuario.first_name} ${venta.id_usuario.last_name}
+                  </div>
+                  <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem;">
+                    ${venta.id_usuario.rut}
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Total</div>
+                  <div class="info-value" style="font-size: 1.3rem;">
+                    <i class="fas fa-dollar-sign me-1"></i>
+                    ${venta.total_venta}
+                  </div>
+                </div>
+              </div>
 
-    aplicarFiltros();
-  }
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <div class="info-label">Estado WebPay</div>
+                  ${getStatusBadge(venta.webpay_payment_status)}
+                </div>
+                <div class="col-md-6">
+                  <div class="info-label">ID Transacción</div>
+                  <div class="info-value">
+                    <i class="fas fa-receipt me-2"></i>
+                    ${venta.webpay_transaction_id || 'No disponible'}
+                  </div>
+                </div>
+              </div>
 
-  function aplicarFiltros() {
-    const nombreFiltro = document.getElementById("buscadorUsuario").value.toLowerCase();
-    const rutFiltro = document.getElementById("buscadorRut").value.toLowerCase();
-    const fechaDesde = document.getElementById("fechaDesde").value;
-    const fechaHasta = document.getElementById("fechaHasta").value;
+              <div class="products-table">
+                <table class="table table-sm mb-0">
+                  <thead>
+                    <tr>
+                      <th><i class="fas fa-box me-2"></i>Producto</th>
+                      <th><i class="fas fa-sort-numeric-up me-2"></i>Cantidad</th>
+                      <th><i class="fas fa-money-bill me-2"></i>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${venta.detalles.map(detalle => `
+                      <tr>
+                        <td>${detalle.nombre_producto}</td>
+                        <td><span class="badge bg-primary">${detalle.cantidad_producto}</span></td>
+                        <td><strong>$${detalle.subtotal_venta}</strong></td>
+                      </tr>`).join('')}
+                  </tbody>
+                </table>
+              </div>
 
-    const cards = document.querySelectorAll(".venta-card");
-    cards.forEach(card => {
-      const nombre = card.dataset.usuario.toLowerCase();
-      const rut = card.dataset.rut.toLowerCase();
-      const fecha = card.dataset.fecha;
+              <div class="text-end mt-3">
+                <a href="/boleta/${venta.id}/" class="view-receipt-btn pulse-animation">
+                  <i class="fas fa-file-invoice"></i>
+                  Ver Boleta
+                </a>
+              </div>
+            </div>`;
+          contenedor.insertAdjacentHTML("beforeend", ventaHTML);
+        });
 
-      const cumpleNombre = nombre.includes(nombreFiltro);
-      const cumpleRut = rut.includes(rutFiltro);
-      const cumpleDesde = !fechaDesde || fecha >= fechaDesde;
-      const cumpleHasta = !fechaHasta || fecha <= fechaHasta;
+        aplicarFiltros();
+      } catch (error) {
+        console.error('Error al cargar ventas:', error);
+        document.getElementById("mensajeVacio").classList.remove("d-none");
+        document.getElementById("mensajeVacio").innerHTML = `
+          <div class="empty-icon">⚠️</div>
+          <h3>Error al cargar datos</h3>
+          <p>No se pudieron cargar las ventas. Por favor, intenta nuevamente.</p>
+        `;
+      }
+    }
 
-      card.style.display = (cumpleNombre && cumpleRut && cumpleDesde && cumpleHasta) ? "block" : "none";
-    });
-  }
+    function aplicarFiltros() {
+      const nombreFiltro = document.getElementById("buscadorUsuario").value.toLowerCase();
+      const rutFiltro = document.getElementById("buscadorRut").value.toLowerCase();
+      const fechaDesde = document.getElementById("fechaDesde").value;
+      const fechaHasta = document.getElementById("fechaHasta").value;
 
-  document.getElementById("buscadorUsuario").addEventListener("input", aplicarFiltros);
-  document.getElementById("buscadorRut").addEventListener("input", aplicarFiltros);
-  document.getElementById("fechaDesde").addEventListener("change", aplicarFiltros);
-  document.getElementById("fechaHasta").addEventListener("change", aplicarFiltros);
+      const cards = document.querySelectorAll(".venta-card");
+      let visibleCount = 0;
 
-  window.addEventListener("DOMContentLoaded", cargarVentas);
-</script>
+      cards.forEach(card => {
+        const nombre = card.dataset.usuario.toLowerCase();
+        const rut = card.dataset.rut.toLowerCase();
+        const fecha = card.dataset.fecha;
 
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        const cumpleNombre = nombre.includes(nombreFiltro);
+        const cumpleRut = rut.includes(rutFiltro);
+        const cumpleDesde = !fechaDesde || fecha >= fechaDesde;
+        const cumpleHasta = !fechaHasta || fecha <= fechaHasta;
+
+        const mostrar = cumpleNombre && cumpleRut && cumpleDesde && cumpleHasta;
+        card.style.display = mostrar ? "block" : "none";
+        
+        if (mostrar) visibleCount++;
+      });
+
+      // Show/hide empty message based on visible cards
+      const mensajeVacio = document.getElementById("mensajeVacio");
+      if (visibleCount === 0 && cards.length > 0) {
+        mensajeVacio.classList.remove("d-none");
+        mensajeVacio.innerHTML = `
+          <div class="empty-icon">🔍</div>
+          <h3>No se encontraron resultados</h3>
+          <p>No hay ventas que coincidan con los filtros aplicados.</p>
+        `;
+      } else {
+        mensajeVacio.classList.add("d-none");
+      }
+    }
+
+    // Event listeners
+    document.getElementById("buscadorUsuario").addEventListener("input", aplicarFiltros);
+    document.getElementById("buscadorRut").addEventListener("input", aplicarFiltros);
+    document.getElementById("fechaDesde").addEventListener("change", aplicarFiltros);
+    document.getElementById("fechaHasta").addEventListener("change", aplicarFiltros);
+
+    // Load sales on page load
+    window.addEventListener("DOMContentLoaded", cargarVentas);
+  </script>
 </body>
 </html>

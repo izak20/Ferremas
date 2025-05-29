@@ -2,282 +2,764 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Administrar Productos - FERREMAS</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/crud.css' %}">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Productos - FERREMAS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #6f42c1;
+            --secondary-color: #fd7e14;
+            --accent-color: #20c997;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --success-color: #28a745;
+            --success-hover: #218838;
+        }
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-    }
+        body {
+            background: linear-gradient(135deg, var(--light-color) 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    .fondo {
-      background: url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Yle55W6QKWSoQbE4/herramientas-manuales-basicas-02-2022-07-AE0vvPgGKDiqlZEX.jpg') no-repeat center center fixed;
-      background-size: cover;
-      min-height: 100vh;
-      padding: 30px 15px;
-    }
+        main { 
+            flex: 1; 
+            padding-top: 120px;
+            padding-bottom: 80px;
+        }
 
-    .container {
-      background-color: rgba(56, 142, 60, 0.95);
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      padding: 30px;
-      color: black;
-    }
+        /* Navbar Bootstrap personalizada */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), #5a32a3) !important;
+            box-shadow: 0 4px 20px rgba(111, 66, 193, 0.3);
+            padding: 1rem 0;
+        }
 
-    .card-panel {
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
+        .navbar-brand img {
+            transition: all 0.3s ease;
+            filter: brightness(1.1);
+        }
 
-    .btn-agregar {
-      background: linear-gradient(to bottom, #2E7D32, #81C784);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 10px 30px;
-      font-size: 1rem;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s, transform 0.3s;
-    }
+        .navbar-brand:hover img {
+            transform: scale(1.1) rotate(5deg);
+        }
 
-    .btn-agregar:hover {
-      background: linear-gradient(to bottom, #45a049, #66bb6a);
-      transform: scale(1.05);
-    }
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            border-radius: 20px;
+            padding: 0.5rem 1rem !important;
+            transition: all 0.3s ease;
+        }
 
-    .btn-volver {
-      background: linear-gradient(to bottom, #2E7D32, #81C784);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 10px 30px;
-      font-size: 1rem;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s, transform 0.3s;
-      text-decoration: none;
-      display: inline-block;
-    }
+        .navbar-nav .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white !important;
+            transform: translateY(-2px);
+        }
 
-    .btn-volver:hover {
-      background: linear-gradient(to bottom, #45a049, #66bb6a);
-      transform: scale(1.05);
-    }
+        .btn-outline-light {
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
 
-    .table th, .table td {
-      vertical-align: middle;
-      color: black;
-    }
+        .btn-outline-light:hover {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(253, 126, 20, 0.4);
+        }
 
-    .table tbody tr {
-      background-color: rgba(255, 255, 255, 0.95);
-    }
+        /* Título principal moderno */
+        .admin-header {
+            text-align: center;
+            margin: 3rem 0;
+            padding: 0 1rem;
+        }
 
-    .img-preview {
-      max-width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 5px;
-    }
+        .admin-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
 
-    h1, h3 {
-      color: black;
-    }
+        .admin-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            border-radius: 2px;
+        }
 
-    .form-label {
-      font-weight: bold;
-    }
+        /* Contenedor principal con diseño moderno */
+        .main-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .btn:hover {
-      opacity: 0.9;
-    }
+        .main-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+        }
 
-    .form-select {
-      width: auto;
-      display: inline-block;
-    }
-  </style>
+        /* Botones de acción principal */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-action {
+            background: linear-gradient(135deg, var(--primary-color), #5a32a3);
+            border: none;
+            border-radius: 25px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary-action::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary-action:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(111, 66, 193, 0.4);
+            background: linear-gradient(135deg, #5a32a3, #4c2a8a);
+            color: white;
+        }
+
+        .btn-secondary-action {
+            background: linear-gradient(135deg, var(--accent-color), #17a085);
+            border: none;
+            border-radius: 25px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(32, 201, 151, 0.4);
+            background: linear-gradient(135deg, #17a085, #138a72);
+            color: white;
+        }
+
+        /* Panel de filtros */
+        .filter-panel {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: none;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-panel .form-label {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .form-select {
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            padding: 0.8rem 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+        }
+
+        /* Paneles de productos */
+        .products-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .products-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--success-color), var(--accent-color));
+        }
+
+        .products-panel.disabled::before {
+            background: linear-gradient(90deg, #6c757d, #adb5bd);
+        }
+
+        .products-panel h3 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Tabla modernizada */
+        .table {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--primary-color), #5a32a3);
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .table tbody tr {
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            transform: scale(1.01);
+        }
+
+        .table td {
+            padding: 1rem;
+            border: none;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+
+        /* Imagen de producto */
+        .img-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .img-preview:hover {
+            transform: scale(1.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Botones de acción en tabla */
+        .btn-action {
+            border-radius: 15px;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            transition: all 0.3s ease;
+            margin: 0.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-danger.btn-action {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        .btn-success.btn-action {
+            background: linear-gradient(135deg, var(--success-color), var(--success-hover));
+        }
+
+        .btn-warning.btn-action {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+            color: #212529;
+        }
+
+        /* Footer modernizado */
+        footer {
+            background: linear-gradient(135deg, var(--dark-color), #343a40);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* Animaciones */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .fade-in-scale {
+            animation: fadeInScale 0.6s ease forwards;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Partículas decorativas */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(111, 66, 193, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-primary-action,
+            .btn-secondary-action {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .main-container {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+
+            .products-panel {
+                padding: 1rem;
+            }
+
+            main {
+                padding-top: 100px;
+                padding-bottom: 60px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .table-responsive {
+                font-size: 0.8rem;
+            }
+            
+            .btn-action {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.7rem;
+            }
+
+            .img-preview {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="fondo">
-  <main class="container my-5">
-    <h1 class="text-center mb-4">Panel de Administración de Productos</h1>
-
-    <div class="text-center mb-4">
-      <a href="{% url 'formulario_producto' %}" class="btn btn-agregar me-2">Agregar Producto</a>
-      <a href="/" class="btn btn-volver">Volver al Inicio</a>
+    <!-- Partículas decorativas -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 1.5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 3.5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 0.5s;"></div>
     </div>
 
-    <div class="card-panel">
-      <label class="form-label">Filtrar por Categoría:</label>
-      <select class="form-select mb-3" id="filtro-categoria">
-        <option value="">Todas</option>
-      </select>
-    </div>
+    <!-- Navbar Bootstrap -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="https://i.ibb.co/pBhm08Vn/logo.png" alt="logo" style="height: 70px; border-radius: 15px 0 15px 0;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <div class="card-panel">
-      <h3>Productos Activos</h3>
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead class="table-success text-center">
-            <tr>
-              <th>Nombre</th>
-              <th>Categoría</th>
-              <th>Precio</th>
-              <th>Stock</th>
-              <th>Descripción</th>
-              <th>Imagen</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tabla-productos" class="text-center"></tbody>
-        </table>
-      </div>
-    </div>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/productos/">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'vista_ofertas' %}">Ofertas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}">Contacto</a></li>
 
-    <div class="card-panel">
-      <h3>Productos Deshabilitados</h3>
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead class="table-secondary text-center">
-            <tr>
-              <th>Nombre</th>
-              <th>Categoría</th>
-              <th>Precio</th>
-              <th>Stock</th>
-              <th>Descripción</th>
-              <th>Imagen</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tabla-deshabilitados" class="text-center"></tbody>
-        </table>
-      </div>
-    </div>
-  </main>
-</div>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item ms-2">
+                            <a class="nav-link" href="{% url 'vista_carrito' %}">
+                                <i class="fas fa-shopping-cart"></i> Carrito
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="nav-link" href="{% url 'mi_historial_compras' %}">
+                                <i class="fas fa-history"></i> Mis Compras
+                            </a>
+                        </li>
+                    {% endif %}
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+                    {% if user.is_staff %}
+                        <li class="nav-item ms-2">
+                            <a class="nav-link" href="{% url 'panel_administracion' %}">
+                                <i class="fas fa-cog me-1"></i> Panel Admin
+                            </a>
+                        </li>
+                    {% endif %}
 
-<script>
-const categoriasDisponibles = [
-  "Herramientas", "Construcción", "Electricidad", "Pinturas",
-  "Gasfitería", "Adhesivos", "Iluminación", "Ferretería", "Seguridad", "Otra"
-];
+                    {% if user.is_authenticated %}
+                        <li class="nav-item ms-3">
+                            <span class="text-white me-3 fw-bold">Hola, {{ user.username }}</span>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="btn btn-outline-light px-3 py-2" href="/usuarios/cerrar-sesion/">
+                                <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-3">
+                            <a class="btn btn-outline-light d-flex align-items-center px-3 py-2" href="/usuarios/iniciosesion/">
+                                <i class="fas fa-user me-2"></i> Iniciar Sesión
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-const apiUrl = isLocal
-  ? "http://127.0.0.1:8000/productos/api/admin/"
-  : "http://127.0.0.1:8000/productos/api/admin/";
+    <main class="container">
+        <!-- Header principal -->
+        <div class="admin-header fade-in-up">
+            <h1 class="admin-title">Administrar Productos</h1>
+        </div>
 
-document.addEventListener("DOMContentLoaded", () => {
-  const filtro = document.getElementById("filtro-categoria");
-  categoriasDisponibles.forEach(cat => {
-    const option = document.createElement("option");
-    option.value = cat.toLowerCase();
-    option.textContent = cat;
-    filtro.appendChild(option);
-  });
+        <!-- Contenedor principal -->
+        <div class="main-container fade-in-scale">
+            <!-- Botones de acción principal -->
+            <div class="action-buttons">
+                <a href="{% url 'formulario_producto' %}" class="btn-primary-action">
+                    <i class="fas fa-plus"></i>
+                    Agregar Producto
+                </a>
+                <a href="{% url 'panel_administracion' %}" class="btn-secondary-action">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver al Panel
+                </a>
+            </div>
 
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(productos => {
-      const tabla = document.getElementById("tabla-productos");
-      const tablaDeshabilitados = document.getElementById("tabla-deshabilitados");
+            <!-- Panel de filtros -->
+            <div class="filter-panel fade-in-up" style="animation-delay: 0.2s;">
+                <label class="form-label">
+                    <i class="fas fa-filter me-2"></i>
+                    Filtrar por Categoría:
+                </label>
+                <select class="form-select" id="filtro-categoria">
+                    <option value="">Todas las categorías</option>
+                </select>
+            </div>
 
-      function render() {
-        const filtroVal = filtro.value.toLowerCase();
-        tabla.innerHTML = "";
-        tablaDeshabilitados.innerHTML = "";
+            <!-- Panel de productos activos -->
+            <div class="products-panel fade-in-up" style="animation-delay: 0.3s;">
+                <h3>
+                    <i class="fas fa-tools me-2"></i>
+                    Productos Activos
+                </h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Descripción</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-productos"></tbody>
+                    </table>
+                </div>
+            </div>
 
-        productos.forEach(producto => {
-          let categoria = producto.categoria?.trim() || "Otra";
-          if (!categoriasDisponibles.includes(categoria)) {
-            categoria = "Otra";
-          }
+            <!-- Panel de productos deshabilitados -->
+            <div class="products-panel disabled fade-in-up" style="animation-delay: 0.4s;">
+                <h3>
+                    <i class="fas fa-eye-slash me-2"></i>
+                    Productos Deshabilitados
+                </h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Descripción</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-deshabilitados"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
 
-          if (filtroVal && categoria.toLowerCase() !== filtroVal) return;
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p class="mb-0">© 2025 FERREMAS - Todos los derechos reservados</p>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-          const fila = `
-            <tr>
-              <td>${producto.nombre}</td>
-              <td>${categoria}</td>
-              <td>$${producto.precio}</td>
-              <td>${producto.stock}</td>
-              <td>${producto.descripcion}</td>
-              <td><img src="${producto.imagen}" class="img-preview"></td>
-              <td>
-                <button class="btn btn-${producto.activo ? 'danger' : 'success'} btn-sm mb-1" onclick="toggleActivoProducto(${producto.id})">
-                  <i class="fas fa-${producto.activo ? 'trash' : 'undo'}"></i> ${producto.activo ? 'Desactivar' : 'Reactivar'}
-                </button>
-                ${producto.activo ? `<a href="/productos/editar/${producto.id}/" class="btn btn-warning btn-sm mb-1"><i class="fas fa-pencil-alt"></i> Editar</a>` : ''}
-              </td>
-            </tr>
-          `;
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
-          if (producto.activo) {
-            tabla.insertAdjacentHTML("beforeend", fila);
-          } else {
-            tablaDeshabilitados.insertAdjacentHTML("beforeend", fila);
-          }
+    <script>
+        const categoriasDisponibles = [
+            "Herramientas", "Construcción", "Electricidad", "Pinturas",
+            "Gasfitería", "Adhesivos", "Iluminación", "Ferretería", "Seguridad", "Otra"
+        ];
+
+        const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+        const apiUrl = isLocal
+            ? "http://127.0.0.1:8000/productos/api/admin/"
+            : "http://127.0.0.1:8000/productos/api/admin/";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Animaciones de entrada
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-up, .fade-in-scale').forEach((element, index) => {
+                    setTimeout(() => {
+                        element.style.opacity = '1';
+                        element.style.transform = element.classList.contains('fade-in-up') ? 'translateY(0)' : 'scale(1)';
+                    }, index * 100);
+                });
+            }, 200);
+
+            const filtro = document.getElementById("filtro-categoria");
+            categoriasDisponibles.forEach(cat => {
+                const option = document.createElement("option");
+                option.value = cat.toLowerCase();
+                option.textContent = cat;
+                filtro.appendChild(option);
+            });
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(productos => {
+                    const tabla = document.getElementById("tabla-productos");
+                    const tablaDeshabilitados = document.getElementById("tabla-deshabilitados");
+
+                    function render() {
+                        const filtroVal = filtro.value.toLowerCase();
+                        tabla.innerHTML = "";
+                        tablaDeshabilitados.innerHTML = "";
+
+                        productos.forEach(producto => {
+                            let categoria = producto.categoria?.trim() || "Otra";
+                            if (!categoriasDisponibles.includes(categoria)) {
+                                categoria = "Otra";
+                            }
+
+                            if (filtroVal && categoria.toLowerCase() !== filtroVal) return;
+
+                            const fila = `
+                                <tr>
+                                    <td><strong>${producto.nombre}</strong></td>
+                                    <td><span class="badge" style="background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); color: white;">${categoria}</span></td>
+                                    <td><strong style="color: var(--success-color);">$${producto.precio}</strong></td>
+                                    <td><span class="badge bg-info">${producto.stock}</span></td>
+                                    <td>${producto.descripcion}</td>
+                                    <td><img src="${producto.imagen}" class="img-preview"></td>
+                                    <td>
+                                        <button class="btn btn-${producto.activo ? 'danger' : 'success'} btn-action" onclick="toggleActivoProducto(${producto.id})">
+                                            <i class="fas fa-${producto.activo ? 'trash' : 'undo'}"></i> ${producto.activo ? 'Desactivar' : 'Reactivar'}
+                                        </button>
+                                        ${producto.activo ? `<a href="/productos/editar/${producto.id}/" class="btn btn-warning btn-action"><i class="fas fa-pencil-alt"></i> Editar</a>` : ''}
+                                    </td>
+                                </tr>
+                            `;
+
+                            if (producto.activo) {
+                                tabla.insertAdjacentHTML("beforeend", fila);
+                            } else {
+                                tablaDeshabilitados.insertAdjacentHTML("beforeend", fila);
+                            }
+                        });
+                    }
+
+                    filtro.addEventListener("change", render);
+                    render();
+                });
         });
-      }
 
-      filtro.addEventListener("change", render);
-      render();
-    });
-});
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
 
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
-const csrftoken = getCookie('csrftoken');
+        function toggleActivoProducto(id) {
+            if (!confirm("¿Estás seguro de que quieres cambiar el estado de este producto?")) return;
 
-function toggleActivoProducto(id) {
-  if (!confirm("¿Estás seguro de que quieres cambiar el estado de este producto?")) return;
+            const toggleUrl = isLocal
+                ? `http://127.0.0.1:8000/productos/api/toggle-activo/${id}/`
+                : `https://prueba-propia-ferremas-production.up.railway.app/productos/api/toggle-activo/${id}/`;
 
-  const toggleUrl = isLocal
-    ? `http://127.0.0.1:8000/productos/api/toggle-activo/${id}/`
-    : `https://prueba-propia-ferremas-production.up.railway.app/productos/api/toggle-activo/${id}/`;
+            fetch(toggleUrl, {
+                method: "PATCH",
+                credentials: "same-origin",
+                headers: {
+                    "X-CSRFToken": csrftoken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.mensaje || "Estado actualizado");
+                location.reload();
+            })
+            .catch(error => {
+                console.error("Error al actualizar producto:", error);
+                alert("Error al conectar con el servidor.");
+            });
+        }
 
-  fetch(toggleUrl, {
-    method: "PATCH",
-    credentials: "same-origin",
-    headers: {
-      "X-CSRFToken": csrftoken
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    alert(data.mensaje || "Estado actualizado");
-    location.reload();
-  })
-  .catch(error => {
-    console.error("Error al actualizar producto:", error);
-    alert("Error al conectar con el servidor.");
-  });
-}
-</script>
+        // Efecto parallax suave para las partículas
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const particles = document.querySelectorAll('.particle');
+            
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 0.1;
+                particle.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
 </body>
 </html>

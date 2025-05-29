@@ -6,184 +6,703 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - FERREMAS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
     <style>
+        :root {
+            --primary-color: #6f42c1;
+            --secondary-color: #fd7e14;
+            --accent-color: #20c997;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --success-color: #28a745;
+            --success-hover: #218838;
+        }
+
         body {
-            background: url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/Yle55W6QKWSoQbE4/herramientas-manuales-basicas-02-2022-07-AE0vvPgGKDiqlZEX.jpg') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Arial', sans-serif;
-            color: #fff;
+            background: linear-gradient(135deg, var(--light-color) 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        .hero {
-            background-color: #2E7D32;
-            padding: 20px;
+        main { 
+            flex: 1; 
+            padding-top: 120px;
+            padding-bottom: 80px;
+        }
+
+        /* Navbar Bootstrap personalizada */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), #5a32a3) !important;
+            box-shadow: 0 4px 20px rgba(111, 66, 193, 0.3);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand img {
+            transition: all 0.3s ease;
+            filter: brightness(1.1);
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            border-radius: 20px;
+            padding: 0.5rem 1rem !important;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-light {
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-light:hover {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(253, 126, 20, 0.4);
+        }
+
+        /* Título principal moderno */
+        .admin-header {
             text-align: center;
-            border-radius: 10px;
-            margin-top: 30px;
+            margin: 3rem 0;
+            padding: 0 1rem;
         }
 
-        .hero h1 {
-            font-size: 2.5rem;
-            color: white;
-            margin: 0;
+        .admin-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
         }
 
-        .panel-image {
+        .admin-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        .admin-subtitle {
+            font-size: 1.3rem;
+            color: #6c757d;
+            font-weight: 300;
+            margin-top: 2rem;
+        }
+
+        /* Logo decorativo */
+        .admin-logo {
             display: block;
-            max-width: 180px;
-            margin: 30px auto 20px;
-            border-radius: 50%;
+            max-width: 120px;
+            margin: 2rem auto;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(111, 66, 193, 0.2);
+            transition: all 0.3s ease;
         }
 
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .admin-logo:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 20px 40px rgba(111, 66, 193, 0.3);
+        }
+
+        /* Cards compactas modernizadas */
+        .admin-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 280px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+        }
+
+        .admin-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Gradientes específicos por card */
+        .admin-card.productos::before {
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .admin-card.usuarios::before {
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+        }
+
+        .admin-card.ventas::before {
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+        }
+
+        .admin-card.retiros::before {
+            background: linear-gradient(90deg, #e74c3c, var(--secondary-color));
+        }
+
+        .admin-card.despachos::before {
+            background: linear-gradient(90deg, #3498db, var(--accent-color));
+        }
+
+        /* Iconos compactos */
+        .card-icon {
+            width: 60px;
+            height: 60px;
             border-radius: 15px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem auto 1rem;
+            font-size: 1.8rem;
+            color: white;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        .card-icon.productos {
+            background: linear-gradient(135deg, var(--primary-color), #5a32a3);
         }
 
-        .card-img-top {
-            height: 180px;
-            object-fit: contain;
-            padding: 1rem;
-            border-radius: 10px;
+        .card-icon.usuarios {
+            background: linear-gradient(135deg, var(--accent-color), #17a085);
         }
 
+        .card-icon.ventas {
+            background: linear-gradient(135deg, var(--secondary-color), #e8650e);
+        }
+
+        .card-icon.retiros {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .card-icon.despachos {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .admin-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Contenido compacto de las cards */
         .card-body {
-            padding: 2rem;
+            padding: 1.5rem;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .card-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #495057;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.8rem;
+            line-height: 1.2;
         }
 
         .card-text {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #6c757d;
+            line-height: 1.4;
+            margin-bottom: 1.2rem;
+            flex: 1;
         }
 
-        .btn-success {
-            background-color: #006400;
-            border-color: #006400;
-            transition: background-color 0.3s ease;
+        /* Botones compactos modernos */
+        .btn-admin {
+            background: linear-gradient(135deg, var(--success-color), var(--success-hover));
+            border: none;
+            border-radius: 20px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-success:hover {
-            background-color: #004d00;
-            border-color: #004d00;
+        .btn-admin::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
         }
 
-        .volver-btn {
-            display: block;
-            margin: 30px auto;
+        .btn-admin:hover::before {
+            left: 100%;
+        }
+
+        .btn-admin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+            background: linear-gradient(135deg, var(--success-hover), #1e7e34);
+        }
+
+        /* Botón volver */
+        .volver-section {
             text-align: center;
+            margin: 4rem 0 2rem;
         }
 
-        .volver-btn .btn {
-            background-color: #006400;
-            border-color: #006400;
+        .btn-volver {
+            background: linear-gradient(135deg, var(--primary-color), #5a32a3);
+            border: none;
+            border-radius: 25px;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .volver-btn .btn:hover {
-            background-color: #004d00;
-            border-color: #004d00;
+        .btn-volver:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(111, 66, 193, 0.4);
+            background: linear-gradient(135deg, #5a32a3, #4c2a8a);
+            color: white;
         }
 
-        .row {
-            margin-top: 40px;
+        /* Grid responsive compacto */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+
+        /* Footer modernizado */
+        footer {
+            background: linear-gradient(135deg, var(--dark-color), #343a40);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* Animaciones */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .fade-in-scale {
+            animation: fadeInScale 0.6s ease forwards;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Efectos de brillo */
+        .shine-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shine-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .shine-effect:hover::after {
+            left: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+            
+            .admin-title {
+                font-size: 2.5rem;
+            }
+            
+            .card-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            
+            .admin-card {
+                height: 250px;
+                margin-bottom: 1rem;
+            }
+
+            .navbar-nav {
+                text-align: center;
+            }
+            
+            main {
+                padding-top: 100px;
+                padding-bottom: 60px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .admin-title {
+                font-size: 2rem;
+            }
+            
+            .admin-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
+            
+            .admin-grid {
+                margin: 2rem 0;
+                grid-template-columns: 1fr;
+            }
+
+            .admin-card {
+                height: 220px;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            .card-text {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Partículas decorativas */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(111, 66, 193, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Título Panel -->
-        <div class="hero">
-            <h1>Panel de Administración</h1>
+    <!-- Partículas decorativas -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 1.5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 3.5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 0.5s;"></div>
+    </div>
+
+    <!-- Navbar Bootstrap -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="https://i.ibb.co/pBhm08Vn/logo.png" alt="logo" style="height: 70px; border-radius: 15px 0 15px 0;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/productos/">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'vista_ofertas' %}">Ofertas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}">Contacto</a></li>
+
+
+                    {% if user.is_authenticated %}
+                        <li class="nav-item ms-2">
+                            <a class="nav-link" href="{% url 'vista_carrito' %}">
+                                <i class="fas fa-shopping-cart"></i> Carrito
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="nav-link" href="{% url 'mi_historial_compras' %}">
+                                <i class="fas fa-history"></i> Mis Compras
+                            </a>
+                        </li>
+                    {% endif %}
+
+                                        {% if user.is_staff %}
+                        <li class="nav-item ms-2">
+                            <a class="nav-link" href="{% url 'panel_administracion' %}">
+                                <i class="fas fa-cog me-1"></i> Panel Admin
+                            </a>
+                        </li>
+                    {% endif %}
+
+                                        {% if user.is_authenticated %}
+                        <li class="nav-item ms-3">
+                            <span class="text-white me-3 fw-bold">Hola, {{ user.username }}</span>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="btn btn-outline-light px-3 py-2" href="/usuarios/cerrar-sesion/">
+                                <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-3">
+                            <a class="btn btn-outline-light d-flex align-items-center px-3 py-2" href="/usuarios/iniciosesion/">
+                                <i class="fas fa-user me-2"></i> Iniciar Sesión
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Header principal -->
+        <div class="admin-header fade-in-up">
+            <h1 class="admin-title">Panel de Administración</h1>
+            <p class="admin-subtitle">Centro de control y gestión integral</p>
+            <img src="{% static 'img/logo.png' %}" alt="FERREMAS" class="admin-logo shine-effect">
         </div>
 
-        <!-- Imagen decorativa -->
-        <img src="{% static 'img/logo.png' %}" alt="FERREMAS" class="panel-image rounded">
-
-        <!-- Tarjetas de Secciones -->
-        <div class="row justify-content-center g-4">
+        <!-- Grid de cards de administración -->
+        <div class="admin-grid">
             <!-- Productos -->
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <img src="https://i.pinimg.com/564x/ec/1e/05/ec1e050c503a1ad2441e88b0bdff9528.jpg" alt="Productos Ferretería" class="card-img-top">
+            <div class="fade-in-scale" style="animation-delay: 0.1s;">
+                <div class="admin-card productos shine-effect">
+                    <div class="card-icon productos">
+                        <i class="fas fa-tools"></i>
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">Administrar Productos</h5>
-                        <p class="card-text">Gestiona el catálogo de productos disponibles.</p>
-                        <a href="{% url 'lista_productos_crud' %}" class="btn btn-success">Ir</a>
+                        <p class="card-text">Gestiona el catálogo completo de productos, categorías y precios.</p>
+                        <a href="{% url 'lista_productos_crud' %}" class="btn btn-admin">
+                            <i class="fas fa-cog me-2"></i>Gestionar
+                        </a>
                     </div>
                 </div>
             </div>
 
             <!-- Usuarios -->
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Usuarios" class="card-img-top">
+            <div class="fade-in-scale" style="animation-delay: 0.2s;">
+                <div class="admin-card usuarios shine-effect">
+                    <div class="card-icon usuarios">
+                        <i class="fas fa-users"></i>
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">Administrar Usuarios</h5>
-                        <p class="card-text">Administra los usuarios registrados en el sistema.</p>
-                        <a href="{% url 'vista_lista_usuarios' %}" class="btn btn-success">Ir</a>
+                        <p class="card-text">Controla el acceso y permisos de usuarios registrados.</p>
+                        <a href="{% url 'vista_lista_usuarios' %}" class="btn btn-admin">
+                            <i class="fas fa-user-cog me-2"></i>Administrar
+                        </a>
                     </div>
                 </div>
             </div>
 
             <!-- Ventas -->
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <img src="https://cdn-icons-png.flaticon.com/512/891/891419.png" alt="Ventas" class="card-img-top">
+            <div class="fade-in-scale" style="animation-delay: 0.3s;">
+                <div class="admin-card ventas shine-effect">
+                    <div class="card-icon ventas">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">Administrar Ventas</h5>
-                        <p class="card-text">Consulta y gestiona el historial de ventas totales en la tienda.</p>
-                        <a href="{% url 'historial_ventas' %}" class="btn btn-success">Ir</a>
+                        <p class="card-text">Analiza el rendimiento comercial y métricas de ventas.</p>
+                        <a href="{% url 'historial_ventas' %}" class="btn btn-admin">
+                            <i class="fas fa-analytics me-2"></i>Analizar
+                        </a>
                     </div>
                 </div>
             </div>
 
             <!-- Retiros en tienda -->
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <img src="https://chalada.cl/cdn/shop/t/96/assets/retiro-en-tienda.png?v=73769260809667671351745541558" alt="Retiros en tienda" class="card-img-top">
+            <div class="fade-in-scale" style="animation-delay: 0.4s;">
+                <div class="admin-card retiros shine-effect">
+                    <div class="card-icon retiros">
+                        <i class="fas fa-store"></i>
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">Retiros en Tienda</h5>
-                        <p class="card-text">Gestiona y valida los retiros con verificación por RUT.</p>
-                        <a href="{% url 'vista_retiros' %}" class="btn btn-success">Ver Retiros</a>
+                        <p class="card-text">Valida y procesa los retiros presenciales por RUT.</p>
+                        <a href="{% url 'vista_retiros' %}" class="btn btn-admin">
+                            <i class="fas fa-check-circle me-2"></i>Validar
+                        </a>
                     </div>
                 </div>
             </div>
 
             <!-- Despachos -->
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <img src="https://cdn-icons-png.freepik.com/512/12719/12719879.png" alt="Despachos" class="card-img-top">
+            <div class="fade-in-scale" style="animation-delay: 0.5s;">
+                <div class="admin-card despachos shine-effect">
+                    <div class="card-icon despachos">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">Despachos</h5>
-                        <p class="card-text">Visualiza y gestiona los despachos a domicilio.</p>
-                        <a href="{% url 'vista_despachos' %}" class="btn btn-success">Ver Despachos</a>
+                        <h5 class="card-title">Gestión de Despachos</h5>
+                        <p class="card-text">Coordina y supervisa entregas a domicilio.</p>
+                        <a href="{% url 'vista_despachos' %}" class="btn btn-admin">
+                            <i class="fas fa-truck me-2"></i>Coordinar
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Botón Volver -->
-        <div class="volver-btn">
-            <a href="{% url 'index' %}" class="btn btn-outline-light mt-4">
-                <i class="fas fa-arrow-left me-2"></i>Volver al Inicio
+        <!-- Botón volver -->
+        <div class="volver-section fade-in-up">
+            <a href="{% url 'index' %}" class="btn-volver">
+                <i class="fas fa-arrow-left"></i>
+                Volver al Inicio
             </a>
         </div>
-    </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p class="mb-0">© 2025 FERREMAS - Todos los derechos reservados</p>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Intersection Observer para animaciones
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observar elementos con animación
+        document.querySelectorAll('.fade-in-up, .fade-in-scale').forEach(element => {
+            element.style.animationPlayState = 'paused';
+            observer.observe(element);
+        });
+
+        // Efecto parallax suave para las partículas
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const particles = document.querySelectorAll('.particle');
+            
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 0.1;
+                particle.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Animación de entrada suave
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-up, .fade-in-scale').forEach((element, index) => {
+                    setTimeout(() => {
+                        element.style.opacity = '1';
+                        element.style.transform = element.classList.contains('fade-in-up') ? 'translateY(0)' : 'scale(1)';
+                    }, index * 100);
+                });
+            }, 200);
+        });
+    </script>
 </body>
 </html>
