@@ -191,6 +191,8 @@
       }
       try {
         const res = await fetch("https://open.er-api.com/v6/latest/CLP");
+
+        
         const data = await res.json();
         tasaCambio = data.rates[monedaDestino];
       } catch (err) {

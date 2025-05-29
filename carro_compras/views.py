@@ -23,6 +23,8 @@ from .models import Venta, Detalle
 from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 
@@ -74,6 +76,39 @@ def vista_carrito(request):
 
 
 # Vista para gestionar el carrito (ver y crear)
+@swagger_auto_schema(
+    method='get',
+    operation_description="Obtener el carrito activo del usuario",
+    responses={
+        200: VentaSerializer,
+        404: openapi.Response(description="No hay carrito abierto"),
+        401: openapi.Response(description="Usuario no autenticado")
+    }
+)
+@swagger_auto_schema(
+    method='post',
+    operation_description="Crear un nuevo carrito con productos",
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'detalles': openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'producto': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID del producto'),
+                        'cantidad_producto': openapi.Schema(type=openapi.TYPE_INTEGER, description='Cantidad del producto')
+                    }
+                )
+            )
+        }
+    ),
+    responses={
+        201: openapi.Response(description="Carrito creado exitosamente"),
+        400: openapi.Response(description="Producto no encontrado"),
+        401: openapi.Response(description="Usuario no autenticado")
+    }
+)
 @api_view(['GET', 'POST'])
 def gestionar_carrito(request):
     if request.user.is_authenticated:
@@ -114,6 +149,23 @@ def gestionar_carrito(request):
     return Response({"detail": "Usuario no autenticado."}, status=status.HTTP_401_UNAUTHORIZED)
 
 # Vista para agregar productos al carrito
+@swagger_auto_schema(
+    method='post',
+    operation_description="Agregar un producto al carrito del usuario",
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'producto': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID del producto'),
+            'cantidad_producto': openapi.Schema(type=openapi.TYPE_INTEGER, description='Cantidad del producto')
+        },
+        required=['producto', 'cantidad_producto']
+    ),
+    responses={
+        200: openapi.Response(description="Producto agregado al carrito exitosamente"),
+        400: openapi.Response(description="Producto no encontrado o ya está en el carrito"),
+        401: openapi.Response(description="Usuario no autenticado")
+    }
+)
 @api_view(['POST'])
 def agregar_producto_carrito(request):
     if request.user.is_authenticated:
@@ -160,6 +212,32 @@ def agregar_producto_carrito(request):
     return Response({"detail": "Usuario no autenticado."}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+@swagger_auto_schema(
+    method='put',
+    operation_description="Actualizar la cantidad de un producto en el carrito",
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'cantidad_producto': openapi.Schema(type=openapi.TYPE_INTEGER, description='Nueva cantidad del producto')
+        },
+        required=['cantidad_producto']
+    ),
+    responses={
+        200: openapi.Response(
+            description="Cantidad actualizada exitosamente",
+            schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'subtotal_venta': openapi.Schema(type=openapi.TYPE_NUMBER),
+                    'total_carrito': openapi.Schema(type=openapi.TYPE_NUMBER)
+                }
+            )
+        ),
+        400: openapi.Response(description="Stock insuficiente"),
+        401: openapi.Response(description="Usuario no autenticado"),
+        404: openapi.Response(description="Detalle no encontrado")
+    }
+)
 @api_view(['PUT'])
 def actualizar_cantidad_producto(request, detalle_id):
     if request.user.is_authenticated:
@@ -205,6 +283,24 @@ def actualizar_cantidad_producto(request, detalle_id):
 
 
 # Vista para disminuir la cantidad de un producto
+@swagger_auto_schema(
+    method='put',
+    operation_description="Disminuir en 1 la cantidad de un producto en el carrito",
+    responses={
+        200: openapi.Response(
+            description="Cantidad disminuida exitosamente",
+            schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'subtotal_venta': openapi.Schema(type=openapi.TYPE_NUMBER),
+                    'total_carrito': openapi.Schema(type=openapi.TYPE_NUMBER)
+                }
+            )
+        ),
+        401: openapi.Response(description="Usuario no autenticado"),
+        404: openapi.Response(description="Detalle no encontrado")
+    }
+)
 @api_view(['PUT'])
 def disminuir_cantidad_producto(request, detalle_id):
     if request.user.is_authenticated:
@@ -241,6 +337,22 @@ def disminuir_cantidad_producto(request, detalle_id):
 #####################
 
 
+@swagger_auto_schema(
+    method='post',
+    operation_description="Iniciar proceso de pago con Webpay",
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'tipo_entrega': openapi.Schema(type=openapi.TYPE_STRING, description='Tipo de entrega: retiro o despacho'),
+            'direccion_despacho': openapi.Schema(type=openapi.TYPE_STRING, description='Dirección de despacho (si aplica)')
+        }
+    ),
+    responses={
+        302: openapi.Response(description="Redirección a Webpay"),
+        401: openapi.Response(description="Usuario no autenticado"),
+        404: openapi.Response(description="No hay carrito activo")
+    }
+)
 @api_view(['POST'])
 def iniciar_pago_webpay(request):
     if not request.user.is_authenticated:
@@ -441,6 +553,14 @@ def mi_historial_compras(request):
 
     return render(request, 'carro_compras/mi_historial.html', {'ventas': ventas})
 
+@swagger_auto_schema(
+    method='get',
+    operation_description="Obtener historial de ventas (solo administradores)",
+    responses={
+        200: VentaSerializer(many=True),
+        403: openapi.Response(description="Permisos insuficientes")
+    }
+)
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def api_historial_ventas(request):
@@ -448,6 +568,14 @@ def api_historial_ventas(request):
     serializer = VentaSerializer(ventas, many=True)
     return Response(serializer.data)
 
+@swagger_auto_schema(
+    method='get',
+    operation_description="Obtener mis compras realizadas",
+    responses={
+        200: VentaSerializer(many=True),
+        401: openapi.Response(description="No autenticado")
+    }
+)
 @api_view(['GET'])
 def api_mis_compras(request):
     if not request.user.is_authenticated:
@@ -457,6 +585,14 @@ def api_mis_compras(request):
     serializer = VentaSerializer(ventas, many=True)
     return Response(serializer.data)
 
+@swagger_auto_schema(
+    method='get',
+    operation_description="Obtener listado de retiros (solo administradores)",
+    responses={
+        200: VentaSerializer(many=True),
+        403: openapi.Response(description="Permisos insuficientes")
+    }
+)
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def api_retiros(request):
@@ -465,6 +601,23 @@ def api_retiros(request):
     return Response(serializer.data)
 
 # Confirmar retiro (admin)
+@swagger_auto_schema(
+    method='post',
+    operation_description="Confirmar retiro de una venta (solo administradores)",
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'rut': openapi.Schema(type=openapi.TYPE_STRING, description='RUT del cliente para verificación')
+        },
+        required=['rut']
+    ),
+    responses={
+        200: openapi.Response(description="Retiro confirmado exitosamente"),
+        400: openapi.Response(description="RUT incorrecto"),
+        403: openapi.Response(description="Permisos insuficientes"),
+        404: openapi.Response(description="Venta no encontrada")
+    }
+)
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def api_confirmar_retiro(request, venta_id):
@@ -478,6 +631,14 @@ def api_confirmar_retiro(request, venta_id):
     venta.save()
     return Response({'mensaje': f"✅ Retiro confirmado para la venta #{venta.id}"})
 
+@swagger_auto_schema(
+    method='get',
+    operation_description="Obtener listado de despachos (solo administradores)",
+    responses={
+        200: VentaSerializer(many=True),
+        403: openapi.Response(description="Permisos insuficientes")
+    }
+)
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def api_despachos(request):
@@ -485,6 +646,15 @@ def api_despachos(request):
     serializer = VentaSerializer(despachos, many=True)
     return Response(serializer.data)
 
+@swagger_auto_schema(
+    method='post',
+    operation_description="Confirmar despacho de una venta (solo administradores)",
+    responses={
+        200: openapi.Response(description="Despacho confirmado exitosamente"),
+        403: openapi.Response(description="Permisos insuficientes"),
+        404: openapi.Response(description="Venta no encontrada")
+    }
+)
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def api_confirmar_despacho(request, venta_id):
@@ -493,6 +663,15 @@ def api_confirmar_despacho(request, venta_id):
     venta.save()
     return Response({'mensaje': f"✅ Despacho confirmado para la venta #{venta.id}"})
 
+@swagger_auto_schema(
+    method='get',
+    operation_description="Obtener detalle de una boleta/venta específica",
+    responses={
+        200: VentaSerializer,
+        403: openapi.Response(description="No autorizado para ver esta boleta"),
+        404: openapi.Response(description="Venta no encontrada")
+    }
+)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def api_boleta(request, id):
