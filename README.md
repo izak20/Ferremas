@@ -14,7 +14,7 @@ Antes de iniciar, asegúrate de tener instalado:
 ## Pasos para iniciar el proyecto
 
 ### 1. Clona este repositorio
-git clone https://github.com/tu-usuario/tu-repo.git
+git clone https://github.com/izak20/Ferremas.git
 cd tu-repo
 
 ### 2. Instala Django y otras dependencias
